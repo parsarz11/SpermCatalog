@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "loPa/0VIm5En63mE5kW7JseYOTtfKauQoHvzYYKR1QhKwJoHF6+eBwjdIWF55k6uX8brwCJsK0/Q1UE0zcqk2g==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\parsa\\source\\repos\\SpermCatalog\\SpermCatalog.API\\SpermCatalog.API.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\parsa\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
+    "C:\\Users\\parsa\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\parsa\\.nuget\\packages\\swashbuckle.aspnetcore\\6.2.3\\swashbuckle.aspnetcore.6.2.3.nupkg.sha512",
+    "C:\\Users\\parsa\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.2.3\\swashbuckle.aspnetcore.swagger.6.2.3.nupkg.sha512",
+    "C:\\Users\\parsa\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.2.3\\swashbuckle.aspnetcore.swaggergen.6.2.3.nupkg.sha512",
+    "C:\\Users\\parsa\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.2.3\\swashbuckle.aspnetcore.swaggerui.6.2.3.nupkg.sha512"
+  ],
+  "logs": []
+}
