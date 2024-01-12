@@ -5,7 +5,12 @@ namespace SpermCatalog.API.Controllers
 {
     [Route("api/Beef/[Action]")]
     [ApiController]
-    public class BeefController : ControllerBase
+    public class BeefSpermController : ControllerBase
     {
+        [HttpGet]
+        public IActionResult Get()
+        {
+            return Ok();
+        }
     }
 }
