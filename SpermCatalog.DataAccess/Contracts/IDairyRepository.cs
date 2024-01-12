@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace SpermCatalog.DataAccess.Contracts
 {
-    public interface IDairySperm
+    public interface IDairyRepository
     {
         Task<List<DairySperm>> GetDairySpermsAsync();
         Task AddDairySpermsListAsync(List<DairySperm> dairySperms);
         Task<DairySperm> FindDairySpermAsync(int id);
-        Task UpdateDairySpermsAsync(int id);
+        void UpdateDairySperms(DairySperm dairySperm);
         Task DeleteAllDairySpermsAsync();
-        Task DeleteDairySperm(int id);
+        void DeleteDairySperm(int id);
     }
 }

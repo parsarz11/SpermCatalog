@@ -30,12 +30,12 @@ namespace SpermCatalog.DataAccess.Repositories
             await _DbContext.BeefSperms.ExecuteDeleteAsync();
         }
 
-        public async Task DeleteBeefSperm(int id)
+        public void DeleteBeefSperm(int id)
         {
-            BeefSperm beefSperm = await FindBeefSpermAsync(id);
+            BeefSperm beefSperm = FindBeefSpermAsync(id).Result;
 
             _DbContext.BeefSperms.Remove(beefSperm);
-            await _DbContext.SaveChangesAsync();
+            _DbContext.SaveChangesAsync();
         }
 
         public async Task<BeefSperm> FindBeefSpermAsync(int id)
@@ -50,12 +50,11 @@ namespace SpermCatalog.DataAccess.Repositories
             return result;
         }
 
-        public async Task UpdateBeefSpermsAsync(int id)
+        public void UpdateBeefSperms(BeefSperm beefSperm)
         {
-            var selectedSperm = await FindBeefSpermAsync(id);
 
-            _DbContext.BeefSperms.Update(selectedSperm);
-            await _DbContext.SaveChangesAsync();
+            _DbContext.BeefSperms.Update(beefSperm);
+            _DbContext.SaveChangesAsync();
             
         }
     }

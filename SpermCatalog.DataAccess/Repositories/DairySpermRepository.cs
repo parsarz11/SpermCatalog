@@ -5,7 +5,7 @@ using SpermCatalog.DataAccess.Entities;
 
 namespace SpermCatalog.DataAccess.Repositories
 {
-    public class DairySpermRepository : IDairySperm
+    public class DairySpermRepository : IDairyRepository
     {
         private readonly SpermCatalogDbContext _DbContext;
 
@@ -26,12 +26,12 @@ namespace SpermCatalog.DataAccess.Repositories
             await _DbContext.DairySperms.ExecuteDeleteAsync();
         }
 
-        public async Task DeleteDairySperm(int id)
+        public void DeleteDairySperm(int id)
         {
-            var beefSperm = await FindDairySpermAsync(id);
+            var beefSperm =  FindDairySpermAsync(id).Result;
 
             _DbContext.DairySperms.Remove(beefSperm);
-            await _DbContext.SaveChangesAsync();
+            _DbContext.SaveChangesAsync();
 
         }
 
@@ -47,12 +47,13 @@ namespace SpermCatalog.DataAccess.Repositories
             return result;
         }
 
-        public async Task UpdateDairySpermsAsync(int id)
+        public void UpdateDairySperms(DairySperm dairySperm)
         {
-            var selectedSperm = await FindDairySpermAsync(id);
 
-            _DbContext.DairySperms.Update(selectedSperm);
-            await _DbContext.SaveChangesAsync();
+            _DbContext.DairySperms.Update(dairySperm);
+
+            
+            _DbContext.SaveChangesAsync();
         }
     }
 }

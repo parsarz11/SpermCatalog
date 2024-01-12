@@ -7,7 +7,7 @@ namespace SpermCatalog.API.Extenssions
     {
         public static IServiceCollection AddDependencies(this IServiceCollection Services)
         {
-            Services.AddScoped<IDairySperm , DairySpermRepository>();
+            Services.AddScoped<IDairyRepository , DairySpermRepository>();
             Services.AddScoped<IBeefRepository , BeefSpermRepository>();
 
             return Services;

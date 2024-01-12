@@ -12,8 +12,8 @@ namespace SpermCatalog.DataAccess.Contracts
         Task<List<BeefSperm>> GetBeefSpermsAsync();
         Task AddBeefSpermsListAsync(List<BeefSperm> beefSperms);
         Task<BeefSperm> FindBeefSpermAsync(int id);
-        Task UpdateBeefSpermsAsync(int id);
+        public void UpdateBeefSperms(BeefSperm beefSperm);
         Task DeleteAllBeefSpermsAsync();
-        Task DeleteBeefSperm(int id);
+        void DeleteBeefSperm(int id);
     }
 }
