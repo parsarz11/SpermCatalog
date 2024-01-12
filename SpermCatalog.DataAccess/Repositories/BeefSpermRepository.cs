@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace SpermCatalog.DataAccess.Repositories
 {
-    public class BeefRepository : IBeefRepository
+    public class BeefSpermRepository : IBeefRepository
     {
         private readonly SpermCatalogDbContext _DbContext;
 
-        public BeefRepository(SpermCatalogDbContext dbContext)
+        public BeefSpermRepository(SpermCatalogDbContext dbContext)
         {
             _DbContext = dbContext;
         }
@@ -53,6 +53,7 @@ namespace SpermCatalog.DataAccess.Repositories
         public async Task UpdateBeefSpermsAsync(int id)
         {
             var selectedSperm = await FindBeefSpermAsync(id);
+
             _DbContext.BeefSperms.Update(selectedSperm);
             await _DbContext.SaveChangesAsync();
             
