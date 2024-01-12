@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33801.468
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpermCatalog.API", "SpermCatalog.API\SpermCatalog.API.csproj", "{A9E00B92-BD84-485D-BE31-D47DCE3F16BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpermCatalog.API", "SpermCatalog.API\SpermCatalog.API.csproj", "{A9E00B92-BD84-485D-BE31-D47DCE3F16BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpermCatalog.DataAccess", "SpermCatalog.DataAccess\SpermCatalog.DataAccess.csproj", "{AD5CFEF3-7D79-4FAE-98EB-39FCDAC1F554}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{A9E00B92-BD84-485D-BE31-D47DCE3F16BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9E00B92-BD84-485D-BE31-D47DCE3F16BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9E00B92-BD84-485D-BE31-D47DCE3F16BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD5CFEF3-7D79-4FAE-98EB-39FCDAC1F554}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD5CFEF3-7D79-4FAE-98EB-39FCDAC1F554}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD5CFEF3-7D79-4FAE-98EB-39FCDAC1F554}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD5CFEF3-7D79-4FAE-98EB-39FCDAC1F554}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

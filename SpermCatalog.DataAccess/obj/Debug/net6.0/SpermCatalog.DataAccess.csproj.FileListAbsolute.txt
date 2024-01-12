@@ -1,0 +1,14 @@
+C:\Users\parsa\source\repos\SpermCatalog\SpermCatalog.DataAccess\bin\Debug\net6.0\SpermCatalog.DataAccess.deps.json
+C:\Users\parsa\source\repos\SpermCatalog\SpermCatalog.DataAccess\bin\Debug\net6.0\SpermCatalog.DataAccess.runtimeconfig.json
+C:\Users\parsa\source\repos\SpermCatalog\SpermCatalog.DataAccess\bin\Debug\net6.0\SpermCatalog.DataAccess.dll
+C:\Users\parsa\source\repos\SpermCatalog\SpermCatalog.DataAccess\bin\Debug\net6.0\SpermCatalog.DataAccess.pdb
+C:\Users\parsa\source\repos\SpermCatalog\SpermCatalog.DataAccess\obj\Debug\net6.0\SpermCatalog.DataAccess.csproj.AssemblyReference.cache
+C:\Users\parsa\source\repos\SpermCatalog\SpermCatalog.DataAccess\obj\Debug\net6.0\SpermCatalog.DataAccess.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\parsa\source\repos\SpermCatalog\SpermCatalog.DataAccess\obj\Debug\net6.0\SpermCatalog.DataAccess.AssemblyInfoInputs.cache
+C:\Users\parsa\source\repos\SpermCatalog\SpermCatalog.DataAccess\obj\Debug\net6.0\SpermCatalog.DataAccess.AssemblyInfo.cs
+C:\Users\parsa\source\repos\SpermCatalog\SpermCatalog.DataAccess\obj\Debug\net6.0\SpermCatalog.DataAccess.csproj.CoreCompileInputs.cache
+C:\Users\parsa\source\repos\SpermCatalog\SpermCatalog.DataAccess\obj\Debug\net6.0\SpermCatalog.DataAccess.dll
+C:\Users\parsa\source\repos\SpermCatalog\SpermCatalog.DataAccess\obj\Debug\net6.0\refint\SpermCatalog.DataAccess.dll
+C:\Users\parsa\source\repos\SpermCatalog\SpermCatalog.DataAccess\obj\Debug\net6.0\SpermCatalog.DataAccess.pdb
+C:\Users\parsa\source\repos\SpermCatalog\SpermCatalog.DataAccess\obj\Debug\net6.0\SpermCatalog.DataAccess.genruntimeconfig.cache
+C:\Users\parsa\source\repos\SpermCatalog\SpermCatalog.DataAccess\obj\Debug\net6.0\ref\SpermCatalog.DataAccess.dll
