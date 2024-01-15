@@ -4,6 +4,6 @@ namespace SpermCatalog.API.Contracts
 {
     public interface IFileServices
     {
-        List<DairySpermCsvDTO> DairyCsvReader(IFormFile file);
+        void DairyCsvReader(IFormFile file);
     }
 }
