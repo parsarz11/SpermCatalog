@@ -7,10 +7,6 @@ namespace SpermCatalog.API.Controllers
     [ApiController]
     public class BeefSpermController : ControllerBase
     {
-        [HttpGet]
-        public IActionResult Get()
-        {
-            return Ok();
-        }
+        
     }
 }

@@ -5,6 +5,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+
+
 builder.Services.AddDbContext<SpermCatalogDbContext>(config =>
     {
         config.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
