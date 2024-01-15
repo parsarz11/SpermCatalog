@@ -2,6 +2,7 @@
 using CsvHelper.Configuration;
 using SpermCatalog.API.Contracts;
 using SpermCatalog.API.models.DTOs;
+using SpermCatalog.DataAccess.Entities;
 using System.Globalization;
 
 namespace SpermCatalog.API.Services.FileServices
@@ -15,7 +16,7 @@ namespace SpermCatalog.API.Services.FileServices
             _dairyServices = dairyServices;
         }
 
-        public void DairyCsvReader(IFormFile file)
+        public List<DairySpermCsvDTO> DairyCsvReader(IFormFile file)
         {
             var diarySpermList = new List<DairySpermCsvDTO>();
 
@@ -32,11 +33,29 @@ namespace SpermCatalog.API.Services.FileServices
                 }
             }
 
-            _dairyServices.AddDairySperms(diarySpermList);
-
-
-
-            
+            return diarySpermList;
         }
+
+        public void BeefCsvReader(IFormFile file)
+        {
+            var diarySpermList = new List<DairySpermCsvDTO>();
+
+
+            using (var stream = new StreamReader(file.OpenReadStream()))
+            {
+
+                using (var csv = new CsvReader(stream, CultureInfo.InvariantCulture))
+                {
+                    csv.Read();
+                    csv.ReadHeader();
+                    diarySpermList = csv.GetRecords<DairySpermCsvDTO>().ToList();
+                    var a = csv.GetRecord<object>();
+                }
+            }
+
+            _dairyServices.AddDairySperms(diarySpermList);
+        }
+
+
     }
 }

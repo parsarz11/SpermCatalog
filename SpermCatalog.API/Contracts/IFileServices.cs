@@ -1,7 +1,9 @@
-﻿namespace SpermCatalog.API.Contracts
+﻿using SpermCatalog.API.models.DTOs;
+
+namespace SpermCatalog.API.Contracts
 {
     public interface IFileServices
     {
-        void DairyCsvReader(IFormFile file);
+        List<DairySpermCsvDTO> DairyCsvReader(IFormFile file);
     }
 }

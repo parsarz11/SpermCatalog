@@ -22,7 +22,7 @@ namespace SpermCatalog.DataAccess.Repositories
         public async Task AddBeefSpermsListAsync(List<BeefSperm> beefSperms)
         {
             await _DbContext.BeefSperms.AddRangeAsync(beefSperms);
-            await _DbContext.SaveChangesAsync();
+            _DbContext.SaveChanges();
         }
 
         public async Task DeleteAllBeefSpermsAsync()
@@ -35,7 +35,7 @@ namespace SpermCatalog.DataAccess.Repositories
             BeefSperm beefSperm = FindBeefSpermAsync(id).Result;
 
             _DbContext.BeefSperms.Remove(beefSperm);
-            _DbContext.SaveChangesAsync();
+            _DbContext.SaveChanges();
         }
 
         public async Task<BeefSperm> FindBeefSpermAsync(int id)
@@ -54,7 +54,7 @@ namespace SpermCatalog.DataAccess.Repositories
         {
 
             _DbContext.BeefSperms.Update(beefSperm);
-            _DbContext.SaveChangesAsync();
+            _DbContext.SaveChanges();
             
         }
     }

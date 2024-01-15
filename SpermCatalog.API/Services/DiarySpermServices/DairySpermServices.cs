@@ -9,7 +9,7 @@ namespace SpermCatalog.API.Services.DiarySpermServices
     public class DairySpermServices : IDairyServices
     {
         private readonly IDairyRepository _DairyRepo;
-        private readonly IMapper _mapper;
+        private IMapper _mapper;
 
         public DairySpermServices(IDairyRepository dairyRepo, IMapper mapper)
         {
