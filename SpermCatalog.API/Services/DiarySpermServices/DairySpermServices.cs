@@ -25,7 +25,7 @@ namespace SpermCatalog.API.Services.DiarySpermServices
 
         public List<DairyResponseDTO> DairySpermListResponse()
         {
-            var dairySpermList = _DairyRepo.GetDairySpermsAsync();
+            var dairySpermList = _DairyRepo.GetDairySpermsAsync().Result;
             var responseDTO = _mapper.Map<List<DairyResponseDTO>>(dairySpermList);
             return responseDTO;
         }

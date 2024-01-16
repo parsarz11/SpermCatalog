@@ -30,7 +30,7 @@ namespace SpermCatalog.API.Services.BeefSpermServices
 
         public List<BeefResponseDTO> BeefSpermListResponse()
         {
-            var beefSpermList = _beefRepo.GetBeefSpermsAsync();
+            var beefSpermList = _beefRepo.GetBeefSpermsAsync().Result;
             var responseDTO = _mapper.Map<List<BeefResponseDTO>>(beefSpermList);
             return responseDTO;
         }
