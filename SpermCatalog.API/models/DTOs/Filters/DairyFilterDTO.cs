@@ -10,7 +10,7 @@
         public string? MGS { get; set; }
 
         public bool IsDescending { get; set; } = false;
-        public string OrderBy { get; set; } = "id";
+        public string OrderBy { get; set; } = "Id";
 
         public string? Range { get; set; }
     }
