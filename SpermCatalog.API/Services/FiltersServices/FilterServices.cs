@@ -86,13 +86,24 @@ namespace SpermCatalog.API.Services.FiltersServices
             }
 
 
-            if (beefFilterDTO.isDescending != false)
+            if (!string.IsNullOrEmpty(beefFilterDTO.OrderBy))
             {
-                response = response.OrderByDescending(x=>x.Id).ToList();
+                if (beefFilterDTO.IsDescending)
+                {
+                    response = response.OrderByDescending(x => x.GetType().GetProperty(beefFilterDTO.OrderBy).GetValue(x)).ToList();
+                }
+                else
+                {
+                    response = response.OrderBy(x => x.GetType().GetProperty(beefFilterDTO.OrderBy).GetValue(x)).ToList();
+                }
+
+
             }
 
             return response;
         }
+
+
 
         public List<DairyResponseDTO> FilterDairySperms(DairyFilterDTO dairyFilterDTO)
         {
@@ -161,9 +172,18 @@ namespace SpermCatalog.API.Services.FiltersServices
             }
 
 
-            if (dairyFilterDTO.isDescending != false)
+            if (!string.IsNullOrEmpty(dairyFilterDTO.OrderBy))
             {
-                response = response.OrderByDescending(x => x.Id).ToList();
+                if (dairyFilterDTO.IsDescending)
+                {
+                    response = response.OrderByDescending(x => x.GetType().GetProperty(dairyFilterDTO.OrderBy).GetValue(x)).ToList();
+                }
+                else
+                {
+                    response = response.OrderBy(x => x.GetType().GetProperty(dairyFilterDTO.OrderBy).GetValue(x)).ToList();
+                }
+
+
             }
 
             return response;

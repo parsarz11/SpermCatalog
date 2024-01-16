@@ -8,7 +8,9 @@
         public string? NAME { get; set; }
         public string? SIRE { get; set; }
         public string? MGS { get; set; }
-        public bool isDescending { get; set; } = false;
+
+        public bool IsDescending { get; set; } = false;
+        public string OrderBy { get; set; } = "id";
 
         public string? Range { get; set; }
     }
