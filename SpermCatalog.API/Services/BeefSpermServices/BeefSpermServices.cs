@@ -10,11 +10,12 @@ namespace SpermCatalog.API.Services.BeefSpermServices
     {
 
 
-        private readonly IBeefRepository _beefRepository;
+        private readonly IBeefRepository _beefRepo;
         private IMapper _mapper;
+
         public BeefSpermServices(IBeefRepository beefRepository, IMapper mapper)
         {
-            _beefRepository = beefRepository;
+            _beefRepo = beefRepository;
             _mapper = mapper;
         }
 
@@ -22,7 +23,16 @@ namespace SpermCatalog.API.Services.BeefSpermServices
         public void AddBeefSperms(List<BeefSpermCsvDTO> beefSpermCsvDTOs)
         {
             var beefSpermList = _mapper.Map<List<BeefSperm>>(beefSpermCsvDTOs);
-            _beefRepository.AddBeefSpermsListAsync(beefSpermList);
+            _beefRepo.AddBeefSpermsListAsync(beefSpermList);
+        }
+
+
+
+        public List<BeefResponseDTO> BeefSpermListResponse()
+        {
+            var beefSpermList = _beefRepo.GetBeefSpermsAsync();
+            var responseDTO = _mapper.Map<List<BeefResponseDTO>>(beefSpermList);
+            return responseDTO;
         }
     }
 }

@@ -9,11 +9,13 @@ namespace SpermCatalog.API.Services.FileServices
     public class FileServices : IFileServices
     {
         private readonly IDairyServices _dairyServices;
-
-        public FileServices(IDairyServices dairyServices)
+        private readonly IBeefSpermServices _beefSpermServices;
+        public FileServices(IDairyServices dairyServices, IBeefSpermServices beefSpermServices)
         {
             _dairyServices = dairyServices;
+            _beefSpermServices = beefSpermServices;
         }
+
 
         public void DairyCsvReader(IFormFile file)
         {
@@ -25,7 +27,7 @@ namespace SpermCatalog.API.Services.FileServices
                 file.CopyTo(ms);
                 
             
-                using (var stream = new StreamReader(ms))
+                using (var stream = new StreamReader(file.OpenReadStream()))
                 {
                     
                     using (var csv = new CsvReader(stream,CultureInfo.InvariantCulture))
@@ -37,9 +39,27 @@ namespace SpermCatalog.API.Services.FileServices
 
             _dairyServices.AddDairySperms(diarySpermList);
 
-
-
-            
         }
+
+
+        public void BeefCsvReader(IFormFile file)
+        {
+            var beefSpermList = new List<BeefSpermCsvDTO>();
+
+
+            using (var stream = new StreamReader(file.OpenReadStream()))
+            {
+
+                using (var csv = new CsvReader(stream, CultureInfo.InvariantCulture))
+                {
+                    beefSpermList = csv.GetRecords<BeefSpermCsvDTO>().ToList();
+                }
+            }
+
+
+            _beefSpermServices.AddBeefSperms(beefSpermList);
+        }
+
+
     }
 }

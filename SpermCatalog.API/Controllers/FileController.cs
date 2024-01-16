@@ -4,7 +4,7 @@ using SpermCatalog.API.Contracts;
 
 namespace SpermCatalog.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[Action]")]
     [ApiController]
     public class FileController : ControllerBase
     {
@@ -19,6 +19,14 @@ namespace SpermCatalog.API.Controllers
         public IActionResult AddDairyFile(IFormFile file)
         {
             _fileServices.DairyCsvReader(file);
+            return Ok();
+        }
+
+
+        [HttpPost]
+        public IActionResult AddBeefFile(IFormFile file)
+        {
+            _fileServices.BeefCsvReader(file);
             return Ok();
         }
     }

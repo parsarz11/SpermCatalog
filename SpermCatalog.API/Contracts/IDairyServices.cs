@@ -5,5 +5,6 @@ namespace SpermCatalog.API.Contracts
     public interface IDairyServices
     {
         void AddDairySperms(List<DairySpermCsvDTO> spermDTO);
+        List<DairyResponseDTO> DairySpermListResponse();
     }
 }

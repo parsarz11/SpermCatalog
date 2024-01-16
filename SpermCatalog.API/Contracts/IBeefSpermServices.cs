@@ -5,5 +5,6 @@ namespace SpermCatalog.API.Contracts
     public interface IBeefSpermServices
     {
         void AddBeefSperms(List<BeefSpermCsvDTO> spermDTO);
+        List<BeefResponseDTO> BeefSpermListResponse();
     }
 }
