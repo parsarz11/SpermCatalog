@@ -1,4 +1,4 @@
-﻿namespace SpermCatalog.API.models.DTOs
+﻿namespace SpermCatalog.API.models.DTOs.ResponseDTOs
 {
     public class DairyResponseDTO
     {

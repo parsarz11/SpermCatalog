@@ -91,3 +91,4 @@ C:\Users\parsa\source\repos\SpermCatalog\SpermCatalog.API\bin\Debug\net6.0\CsvHe
 C:\Users\parsa\source\repos\SpermCatalog\SpermCatalog.API\bin\Debug\net6.0\Mapster.dll
 C:\Users\parsa\source\repos\SpermCatalog\SpermCatalog.API\bin\Debug\net6.0\Mapster.Core.dll
 C:\Users\parsa\source\repos\SpermCatalog\SpermCatalog.API\bin\Debug\net6.0\Mapster.DependencyInjection.dll
+C:\Users\parsa\source\repos\SpermCatalog\SpermCatalog.API\bin\Debug\net6.0\Newtonsoft.Json.dll

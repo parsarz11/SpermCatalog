@@ -1,6 +1,7 @@
 ﻿using MapsterMapper;
 using SpermCatalog.API.Contracts;
-using SpermCatalog.API.models.DTOs;
+using SpermCatalog.API.models.DTOs.csvDTOs;
+using SpermCatalog.API.models.DTOs.ResponseDTOs;
 using SpermCatalog.DataAccess.Contracts;
 using SpermCatalog.DataAccess.Entities;
 
@@ -30,7 +31,7 @@ namespace SpermCatalog.API.Services.BeefSpermServices
 
         public List<BeefResponseDTO> BeefSpermListResponse()
         {
-            var beefSpermList = _beefRepo.GetBeefSpermsAsync().Result;
+            var beefSpermList = _beefRepo.GetBeefSpermsAsync().Result.OrderBy(x => x.Id).ToList();
             var responseDTO = _mapper.Map<List<BeefResponseDTO>>(beefSpermList);
             return responseDTO;
         }

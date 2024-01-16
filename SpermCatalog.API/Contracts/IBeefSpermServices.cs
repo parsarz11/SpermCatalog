@@ -1,4 +1,5 @@
-﻿using SpermCatalog.API.models.DTOs;
+﻿using SpermCatalog.API.models.DTOs.csvDTOs;
+using SpermCatalog.API.models.DTOs.ResponseDTOs;
 
 namespace SpermCatalog.API.Contracts
 {

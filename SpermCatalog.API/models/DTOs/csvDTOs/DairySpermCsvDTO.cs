@@ -1,6 +1,6 @@
 ﻿using CsvHelper.Configuration.Attributes;
 
-namespace SpermCatalog.API.models.DTOs
+namespace SpermCatalog.API.models.DTOs.csvDTOs
 {
     public class DairySpermCsvDTO
     {

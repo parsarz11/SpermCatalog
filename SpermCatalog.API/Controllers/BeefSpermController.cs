@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SpermCatalog.API.Contracts;
+using SpermCatalog.API.models.DTOs.Filters;
 
 namespace SpermCatalog.API.Controllers
 {
@@ -8,17 +9,18 @@ namespace SpermCatalog.API.Controllers
     [ApiController]
     public class BeefSpermController : ControllerBase
     {
-        private readonly IBeefSpermServices _BeefServices;
-
-        public BeefSpermController(IBeefSpermServices beefServices)
+        private readonly IFilterServices _SpermFilter;
+        public BeefSpermController(IFilterServices spermFilter)
         {
-            _BeefServices = beefServices;
+
+            _SpermFilter = spermFilter;
         }
 
         [HttpGet("List")]
-        public IActionResult GetListOfBeefSperms()
+        public IActionResult GetListOfBeefSperms([FromQuery]BeefFilterDTO? filterDTO)
         {
-            var result = _BeefServices.BeefSpermListResponse();
+            var result = _SpermFilter.FilterBeefSperms(filterDTO);
+            
             return Ok(result);
         }
     }

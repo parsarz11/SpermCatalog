@@ -1,7 +1,7 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
 using SpermCatalog.API.Contracts;
-using SpermCatalog.API.models.DTOs;
+using SpermCatalog.API.models.DTOs.csvDTOs;
 using System.Globalization;
 
 namespace SpermCatalog.API.Services.FileServices
