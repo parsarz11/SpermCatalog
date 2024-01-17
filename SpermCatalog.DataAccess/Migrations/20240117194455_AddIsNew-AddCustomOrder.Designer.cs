@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SpermCatalog.DataAccess.DatabaseContext;
 
@@ -10,9 +11,11 @@ using SpermCatalog.DataAccess.DatabaseContext;
 namespace SpermCatalog.DataAccess.Migrations
 {
     [DbContext(typeof(SpermCatalogDbContext))]
-    partial class SpermCatalogDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240117194455_AddIsNew-AddCustomOrder")]
+    partial class AddIsNewAddCustomOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -36,5 +36,8 @@ namespace SpermCatalog.DataAccess.Entities
         public string MGS { get; set; }
         public int price { get; set; }
 
+
+        public bool IsNew { get; set; }
+        public int CustomOrder { get; set; } = 999;
     }
 }
