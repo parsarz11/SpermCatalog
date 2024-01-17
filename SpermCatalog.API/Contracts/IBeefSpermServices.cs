@@ -9,5 +9,9 @@ namespace SpermCatalog.API.Contracts
     {
         void AddBeefSperms(List<BeefSpermCsvDTO> spermDTO);
         List<BeefSperm> FilterBeefSperms(BeefFilterDTO beefFilterDTO);
+        BeefSperm FindSperm(int id);
+        void UpdateBeefSperm(BeefSperm beefSperm);
+        void DeleteSperm(int id);
+        void DeleteAllSperms();
     }
 }

@@ -30,5 +30,34 @@ namespace SpermCatalog.API.Controllers
             return Ok(mappedList);
         }
 
+
+        [HttpGet("Find")]
+        public IActionResult FindSperm(int id)
+        {
+            var sperm = _DairyServices.FindSperm(id);
+            var mappedSperm = _mapper.Map<DairyResponseDTO>(sperm);
+            return Ok(mappedSperm);
+        }
+
+        [HttpPut("Update")]
+        public IActionResult UpdateSperm(DairySperm dairySperm)
+        {
+            _DairyServices.UpdateDairySperm(dairySperm);
+            return Ok();
+        }
+
+        [HttpDelete("Delete")]
+        public IActionResult DeleteSperm(int id)
+        {
+            _DairyServices.DeleteSperm(id);
+            return Ok();
+        }
+
+        public IActionResult DeleteAll()
+        {
+            _DairyServices.DeleteAllSperms();
+            return Ok();
+        }
+
     }
 }

@@ -12,7 +12,7 @@ namespace SpermCatalog.DataAccess.Contracts
         Task<List<BeefSperm>> GetBeefSpermsAsync();
         Task AddBeefSpermsListAsync(List<BeefSperm> beefSperms);
         Task<BeefSperm> FindBeefSpermAsync(int id);
-        public void UpdateBeefSperms(BeefSperm beefSperm);
+        public void UpdateBeefSperm(BeefSperm beefSperm);
         Task DeleteAllBeefSpermsAsync();
         void DeleteBeefSperm(int id);
     }

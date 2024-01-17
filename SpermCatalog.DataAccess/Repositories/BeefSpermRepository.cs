@@ -50,7 +50,7 @@ namespace SpermCatalog.DataAccess.Repositories
             return result;
         }
 
-        public void UpdateBeefSperms(BeefSperm beefSperm)
+        public void UpdateBeefSperm(BeefSperm beefSperm)
         {
 
             _DbContext.BeefSperms.Update(beefSperm);

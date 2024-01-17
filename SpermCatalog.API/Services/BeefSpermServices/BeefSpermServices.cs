@@ -123,5 +123,26 @@ namespace SpermCatalog.API.Services.BeefSpermServices
 
             return response;
         }
+
+
+        public BeefSperm FindSperm(int id)
+        {
+            return _beefRepo.FindBeefSpermAsync(id).Result;
+        }
+        
+        public void UpdateBeefSperm(BeefSperm beefSperm)
+        {
+            _beefRepo.UpdateBeefSperm(beefSperm);
+        }
+
+        public void DeleteSperm(int id)
+        {
+            _beefRepo.DeleteBeefSperm(id);
+        }
+
+        public void DeleteAllSperms()
+        {
+            _beefRepo.DeleteAllBeefSpermsAsync();
+        }
     }
 }

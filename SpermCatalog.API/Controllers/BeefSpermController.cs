@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using SpermCatalog.API.Contracts;
 using SpermCatalog.API.models.DTOs.Filters;
 using SpermCatalog.API.models.DTOs.ResponseDTOs;
+using SpermCatalog.DataAccess.Entities;
 
 namespace SpermCatalog.API.Controllers
 {
@@ -25,6 +26,35 @@ namespace SpermCatalog.API.Controllers
             var spermList = _SpermServices.FilterBeefSperms(filterDTO);
             var mappedSpermList = _mapper.Map<List<BeefResponseDTO>>(spermList);
             return Ok(mappedSpermList);
+        }
+
+
+        [HttpGet("Find")]
+        public IActionResult FindSperm(int id)
+        {
+            var sperm = _SpermServices.FindSperm(id);
+            var mappedSperm = _mapper.Map<BeefResponseDTO>(sperm);
+            return Ok(mappedSperm);
+        }
+
+        [HttpPut("Update")]
+        public IActionResult UpdateSperm(BeefSperm BeefSperm)
+        {
+            _SpermServices.UpdateBeefSperm(BeefSperm);
+            return Ok();
+        }
+
+        [HttpDelete("Delete")]
+        public IActionResult DeleteSperm(int id)
+        {
+            _SpermServices.DeleteSperm(id);
+            return Ok();
+        }
+
+        public IActionResult DeleteAll()
+        {
+            _SpermServices.DeleteAllSperms();
+            return Ok();
         }
     }
 }

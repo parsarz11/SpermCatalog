@@ -118,5 +118,26 @@ namespace SpermCatalog.API.Services.DiarySpermServices
 
             return response;
         }
+
+
+        public DairySperm FindSperm(int id)
+        {
+            return _DairyRepo.FindDairySpermAsync(id).Result;
+        }
+
+        public void UpdateDairySperm(DairySperm dairySperm)
+        {
+            _DairyRepo.UpdateDairySperm(dairySperm);
+        }
+
+        public void DeleteSperm(int id)
+        {
+            _DairyRepo.DeleteDairySperm(id);
+        }
+
+        public void DeleteAllSperms()
+        {
+            _DairyRepo.DeleteAllDairySpermsAsync();
+        }
     }
 }

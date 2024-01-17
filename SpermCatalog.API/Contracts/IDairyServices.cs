@@ -9,5 +9,10 @@ namespace SpermCatalog.API.Contracts
     {
         void AddDairySperms(List<DairySpermCsvDTO> spermDTO);
         List<DairySperm> FilterDairySperms(DairyFilterDTO dairyFilterDTO);
+        DairySperm FindSperm(int id);
+        void UpdateDairySperm(DairySperm dairySperm);
+        void DeleteSperm(int id);
+        void DeleteAllSperms();
+
     }
 }
