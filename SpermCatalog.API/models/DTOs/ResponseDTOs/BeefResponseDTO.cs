@@ -21,5 +21,8 @@
         public string SIRE { get; set; }
         public string MGS { get; set; }
         public int Price { get; set; }
+
+        public bool IsNew { get; set; }
+        public int CustomOrder { get; set; }
     }
 }
