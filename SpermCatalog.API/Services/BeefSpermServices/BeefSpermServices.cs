@@ -36,7 +36,7 @@ namespace SpermCatalog.API.Services.BeefSpermServices
 
         public List<BeefSperm> FilterBeefSperms(BeefFilterDTO beefFilterDTO)
         {
-            var response = _beefRepo.GetBeefSpermsAsync().Result.OrderBy(x => x.Id).ToList();
+            var response = _beefRepo.GetBeefSpermsAsync().Result.OrderBy(x => x.CustomOrder).ThenBy(x => x.IsNew).ThenBy(x => x.PCAR).ThenBy(x => x.CR).ToList();
             if (beefFilterDTO == null)
             {
                 return response;
@@ -101,18 +101,24 @@ namespace SpermCatalog.API.Services.BeefSpermServices
             }
 
 
-            if (!string.IsNullOrEmpty(beefFilterDTO.OrderBy))
+            if (beefFilterDTO.IsDescending)
             {
-                if (beefFilterDTO.IsDescending)
+                if (!string.IsNullOrEmpty(beefFilterDTO.OrderBy))
                 {
                     response = response.OrderByDescending(x => x.GetType().GetProperty(beefFilterDTO.OrderBy).GetValue(x)).ToList();
                 }
                 else
                 {
-                    response = response.OrderBy(x => x.GetType().GetProperty(beefFilterDTO.OrderBy).GetValue(x)).ToList();
+                    response = response.OrderByDescending(x => x.CustomOrder).ThenByDescending(x => x.IsNew).ThenByDescending(x => x.PCAR).ThenByDescending(x => x.CR).ToList();
                 }
 
-
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(beefFilterDTO.OrderBy))
+                {
+                    response = response.OrderBy(x => x.GetType().GetProperty(beefFilterDTO.OrderBy).GetValue(x)).ToList();
+                }
             }
 
             return response;

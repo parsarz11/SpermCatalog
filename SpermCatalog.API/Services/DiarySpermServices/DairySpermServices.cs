@@ -31,7 +31,7 @@ namespace SpermCatalog.API.Services.DiarySpermServices
 
         public List<DairySperm> FilterDairySperms(DairyFilterDTO dairyFilterDTO)
         {
-            var response = _DairyRepo.GetDairySpermsAsync().Result.OrderBy(x => x.Id).ToList();
+            var response = _DairyRepo.GetDairySpermsAsync().Result.OrderBy(x =>x.CustomOrder).ThenBy(x=>x.IsNew).ThenBy(x=>x.LNM).ThenBy(x=>x.FM).ToList();
             if (dairyFilterDTO == null)
             {
                 return response;
@@ -95,20 +95,26 @@ namespace SpermCatalog.API.Services.DiarySpermServices
 
             }
 
-
-            if (!string.IsNullOrEmpty(dairyFilterDTO.OrderBy))
+            if (dairyFilterDTO.IsDescending)
             {
-                if (dairyFilterDTO.IsDescending)
+                if (!string.IsNullOrEmpty(dairyFilterDTO.OrderBy))
                 {
                     response = response.OrderByDescending(x => x.GetType().GetProperty(dairyFilterDTO.OrderBy).GetValue(x)).ToList();
                 }
                 else
                 {
-                    response = response.OrderBy(x => x.GetType().GetProperty(dairyFilterDTO.OrderBy).GetValue(x)).ToList();
+                    response = response.OrderByDescending(x => x.CustomOrder).ThenByDescending(x => x.IsNew).ThenByDescending(x => x.LNM).ThenByDescending(x => x.FM).ToList();
                 }
 
-
             }
+            else
+            {
+                if (!string.IsNullOrEmpty(dairyFilterDTO.OrderBy))
+                {
+                    response = response.OrderBy(x => x.GetType().GetProperty(dairyFilterDTO.OrderBy).GetValue(x)).ToList();
+                }
+            }
+            
 
             return response;
         }
