@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using MapsterMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SpermCatalog.API.Contracts;
 using SpermCatalog.API.models.DTOs.Filters;
+using SpermCatalog.API.models.DTOs.ResponseDTOs;
 
 namespace SpermCatalog.API.Controllers
 {
@@ -9,19 +11,20 @@ namespace SpermCatalog.API.Controllers
     [ApiController]
     public class BeefSpermController : ControllerBase
     {
-        private readonly IFilterServices _SpermFilter;
-        public BeefSpermController(IFilterServices spermFilter)
+        private readonly IBeefSpermServices _SpermServices;
+        private readonly IMapper _mapper;
+        public BeefSpermController(IBeefSpermServices spermServices,IMapper mapper)
         {
-
-            _SpermFilter = spermFilter;
+            _SpermServices = spermServices;
+            _mapper = mapper;
         }
 
         [HttpGet("List")]
         public IActionResult GetListOfBeefSperms([FromQuery]BeefFilterDTO? filterDTO)
         {
-            var result = _SpermFilter.FilterBeefSperms(filterDTO);
-            
-            return Ok(result);
+            var spermList = _SpermServices.FilterBeefSperms(filterDTO);
+            var mappedSpermList = _mapper.Map<List<BeefResponseDTO>>(spermList);
+            return Ok(mappedSpermList);
         }
     }
 }
