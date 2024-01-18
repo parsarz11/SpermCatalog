@@ -53,6 +53,7 @@ namespace SpermCatalog.API.Controllers
             return Ok();
         }
 
+        [HttpDelete("DeleteAll")]
         public IActionResult DeleteAll()
         {
             _DairyServices.DeleteAllSperms();

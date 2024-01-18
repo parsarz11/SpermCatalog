@@ -31,7 +31,7 @@ namespace SpermCatalog.API.Services.DiarySpermServices
 
         public List<DairySperm> FilterDairySperms(DairyFilterDTO dairyFilterDTO)
         {
-            var response = _DairyRepo.GetDairySpermsAsync().Result.OrderBy(x =>x.CustomOrder).ThenBy(x=>x.IsNew).ThenBy(x=>x.LNM).ThenBy(x=>x.FM).ToList();
+            var response = _DairyRepo.GetDairySpermsAsync().Result.OrderBy(x =>x.CustomOrder).ThenByDescending(x=>x.IsNew).ThenBy(x=>x.LNM).ThenBy(x=>x.FM).ToList();
             if (dairyFilterDTO == null)
             {
                 return response;
@@ -103,7 +103,7 @@ namespace SpermCatalog.API.Services.DiarySpermServices
                 }
                 else
                 {
-                    response = response.OrderByDescending(x => x.CustomOrder).ThenByDescending(x => x.IsNew).ThenByDescending(x => x.LNM).ThenByDescending(x => x.FM).ToList();
+                    response = response.OrderByDescending(x => x.CustomOrder).ThenBy(x => x.IsNew).ThenByDescending(x => x.LNM).ThenByDescending(x => x.FM).ToList();
                 }
 
             }

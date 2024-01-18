@@ -21,7 +21,7 @@ namespace SpermCatalog.DataAccess.Repositories
              _DbContext.SaveChanges();
         }
 
-        public async Task DeleteAllDairySpermAsync()
+        public async Task DeleteAllDairySpermsAsync()
         {
             await _DbContext.DairySperms.ExecuteDeleteAsync();
         }
@@ -47,7 +47,7 @@ namespace SpermCatalog.DataAccess.Repositories
             return result;
         }
 
-        public void UpdateDairySperms(DairySperm dairySperm)
+        public void UpdateDairySperm(DairySperm dairySperm)
         {
 
             _DbContext.DairySperms.Update(dairySperm);

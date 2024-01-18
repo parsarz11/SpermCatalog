@@ -36,7 +36,7 @@ namespace SpermCatalog.API.Services.BeefSpermServices
 
         public List<BeefSperm> FilterBeefSperms(BeefFilterDTO beefFilterDTO)
         {
-            var response = _beefRepo.GetBeefSpermsAsync().Result.OrderBy(x => x.CustomOrder).ThenBy(x => x.IsNew).ThenBy(x => x.PCAR).ThenBy(x => x.CR).ToList();
+            var response = _beefRepo.GetBeefSpermsAsync().Result.OrderBy(x => x.CustomOrder).ThenByDescending(x => x.IsNew).ThenBy(x => x.PCAR).ThenBy(x => x.CR).ToList();
             if (beefFilterDTO == null)
             {
                 return response;
@@ -109,7 +109,7 @@ namespace SpermCatalog.API.Services.BeefSpermServices
                 }
                 else
                 {
-                    response = response.OrderByDescending(x => x.CustomOrder).ThenByDescending(x => x.IsNew).ThenByDescending(x => x.PCAR).ThenByDescending(x => x.CR).ToList();
+                    response = response.OrderByDescending(x => x.CustomOrder).ThenBy(x => x.IsNew).ThenByDescending(x => x.PCAR).ThenByDescending(x => x.CR).ToList();
                 }
 
             }
