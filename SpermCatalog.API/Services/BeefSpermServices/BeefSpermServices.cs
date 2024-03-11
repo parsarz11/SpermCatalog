@@ -36,7 +36,11 @@ namespace SpermCatalog.API.Services.BeefSpermServices
 
         public List<BeefSperm> FilterBeefSperms(BeefFilterDTO beefFilterDTO)
         {
-            var response = _beefRepo.GetBeefSpermsAsync().Result.OrderBy(x => x.CustomOrder).ThenByDescending(x => x.IsNew).ThenBy(x => x.PCAR).ThenBy(x => x.CR).ToList();
+            var response = _beefRepo.GetBeefSpermsAsync().Result.OrderBy(x => x.CustomOrder)
+                .ThenByDescending(x => x.IsNew)
+                .ThenBy(x => x.SCE)
+                .ToList();
+
             if (beefFilterDTO == null)
             {
                 return response;

@@ -31,7 +31,15 @@ namespace SpermCatalog.API.Services.DiarySpermServices
 
         public List<DairySperm> FilterDairySperms(DairyFilterDTO dairyFilterDTO)
         {
-            var response = _DairyRepo.GetDairySpermsAsync().Result.OrderBy(x =>x.CustomOrder).ThenByDescending(x=>x.IsNew).ThenBy(x=>x.LNM).ThenBy(x=>x.FM).ToList();
+            var response = _DairyRepo.GetDairySpermsAsync().Result.OrderBy(x =>x.CustomOrder)
+                .ThenByDescending(x=>x.IsNew)
+                .ThenBy(x=>x.FM)
+                .ThenBy(x=>x.LNM)
+                .ThenBy(x => x.MILK)
+                .ThenBy(x => x.PL)
+                .ThenBy(x => x.TPI)
+                .ToList();
+
             if (dairyFilterDTO == null)
             {
                 return response;
