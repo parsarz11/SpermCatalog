@@ -17,6 +17,11 @@ namespace SpermCatalog.DataAccess.Repositories
 
         public async Task AddDairySpermsListAsync(List<DairySperm> dairySperms)
         {
+            if (dairySperms == null)
+            {
+                throw new Exception("beef sperm is null| DairySpermRepository/AddDairySpermsListAsync");
+            }
+
             await _DbContext.DairySperms.AddRangeAsync(dairySperms);
              _DbContext.SaveChanges();
         }
@@ -38,13 +43,26 @@ namespace SpermCatalog.DataAccess.Repositories
         public async Task<DairySperm> FindDairySpermAsync(int id)
         {
             var result = await _DbContext.DairySperms.FirstOrDefaultAsync(x => x.Id == id);
-            return result;
+            
+            if (result != null)
+            {
+                return result;
+            }
+
+            throw new Exception("dairy sperm not found | DairySpermsRepository/FindDairySpermsAsync");
+
         }
 
         public async Task<List<DairySperm>> GetDairySpermsAsync()
         {
             var result = await _DbContext.DairySperms.ToListAsync();
-            return result;
+            
+            if (result != null)
+            {
+                return result;
+            }
+
+            throw new Exception("dairy sperm is empty | DairySpermsRepository/DairySpermsSpermsAsync");
         }
 
         public void UpdateDairySperm(DairySperm dairySperm)

@@ -5,6 +5,7 @@ using SpermCatalog.API.models.DTOs.Filters;
 using SpermCatalog.API.models.DTOs.ResponseDTOs;
 using SpermCatalog.DataAccess.Contracts;
 using SpermCatalog.DataAccess.Entities;
+using System.Collections;
 using System.Text.Json;
 
 namespace SpermCatalog.API.Services.BeefSpermServices
@@ -24,7 +25,7 @@ namespace SpermCatalog.API.Services.BeefSpermServices
 
 
         public void AddBeefSperms(List<BeefSpermCsvDTO> beefSpermCsvDTOs)
-        {
+        {            
             var beefSpermList = _mapper.Map<List<BeefSperm>>(beefSpermCsvDTOs);
             _beefRepo.AddBeefSpermsListAsync(beefSpermList);
         }
@@ -72,6 +73,10 @@ namespace SpermCatalog.API.Services.BeefSpermServices
                 response = response.Where(x => x.MGS == beefFilterDTO.MGS).ToList();
             }
 
+            if (response.Count <= 0)
+            {
+                throw new Exception("Data with those sperm filters not found| BeefSpermServices/FilterBeefSperms");
+            }
 
             if (!string.IsNullOrEmpty(beefFilterDTO.Range))
             {

@@ -71,6 +71,11 @@ namespace SpermCatalog.API.Services.DiarySpermServices
                 response = response.Where(x => x.MGS == dairyFilterDTO.MGS).ToList();
             }
 
+            if (response.Count <= 0)
+            {
+                throw new Exception("Data with those sperm filters not found| DairySpermsServices/FilterDairySperms");
+            }
+
 
             if (!string.IsNullOrEmpty(dairyFilterDTO.Range))
             {

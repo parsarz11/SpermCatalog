@@ -21,6 +21,10 @@ namespace SpermCatalog.DataAccess.Repositories
 
         public async Task AddBeefSpermsListAsync(List<BeefSperm> beefSperms)
         {
+            if (beefSperms == null)
+            {
+                throw new Exception("beef sperm is null| BeefSpermRepository/AddBeefSpermsListAsync");
+            }
             await _DbContext.BeefSperms.AddRangeAsync(beefSperms);
             _DbContext.SaveChanges();
         }
@@ -33,21 +37,34 @@ namespace SpermCatalog.DataAccess.Repositories
         public void DeleteBeefSperm(int id)
         {
             BeefSperm beefSperm = FindBeefSpermAsync(id).Result;
-
             _DbContext.BeefSperms.Remove(beefSperm);
             _DbContext.SaveChanges();
+
         }
 
         public async Task<BeefSperm> FindBeefSpermAsync(int id)
         {
             var result = await _DbContext.BeefSperms.FirstOrDefaultAsync(x => x.Id == id);
-            return result;
+
+            if (result != null)
+            {
+                return result;
+            }
+
+            throw new Exception("beef Sperm not found | BeefSpermRepository/FindBeefSpermAsync");
+
         }
 
         public async Task<List<BeefSperm>> GetBeefSpermsAsync()
         {
             var result = await _DbContext.BeefSperms.ToListAsync();
-            return result;
+
+            if (result != null)
+            {
+                return result;
+            }
+
+            throw new Exception("beef sperm is empty | BeefSpermRepository/GetBeefSpermsAsync");
         }
 
         public void UpdateBeefSperm(BeefSperm beefSperm)
