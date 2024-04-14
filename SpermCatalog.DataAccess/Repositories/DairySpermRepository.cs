@@ -1,53 +1,56 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using SpermCatalog.DataAccess.Contracts;
-using SpermCatalog.DataAccess.DatabaseContext;
 using SpermCatalog.DataAccess.Entities;
 
 namespace SpermCatalog.DataAccess.Repositories
 {
     public class DairySpermRepository : IDairyRepository
     {
-        private readonly SpermCatalogDbContext _DbContext;
+        private readonly ISpermCatalogDbContext _DbContext;
 
-        public DairySpermRepository(SpermCatalogDbContext dbContext)
+        public DairySpermRepository(ISpermCatalogDbContext dbContext)
         {
             _DbContext = dbContext;
         }
 
 
-        public async Task AddDairySpermsListAsync(List<DairySperm> dairySperms)
+        public async Task AddRangeDairySpermsAsync(List<DairySperm> dairySperms)
         {
             if (dairySperms == null)
             {
                 throw new Exception("beef sperm is null| DairySpermRepository/AddDairySpermsListAsync");
             }
 
-            await _DbContext.DairySperms.AddRangeAsync(dairySperms);
-             _DbContext.SaveChanges();
+            await _DbContext.DairySperms.InsertManyAsync(dairySperms);
+        }
+
+        public async Task AddDairySpermAsync(DairySperm dairySperm)
+        {
+            await _DbContext.DairySperms.InsertOneAsync(dairySperm);
         }
 
         public async Task DeleteAllDairySpermsAsync()
         {
-            await _DbContext.DairySperms.ExecuteDeleteAsync();
+            await _DbContext.DairySperms.DeleteManyAsync(new BsonDocument());
         }
 
-        public void DeleteDairySperm(int id)
+        public async Task DeleteDairySpermAsync(string id)
         {
-            var beefSperm =  FindDairySpermAsync(id).Result;
-
-            _DbContext.DairySperms.Remove(beefSperm);
-            _DbContext.SaveChanges();
-
+            var filter = Builders<DairySperm>.Filter.Eq(p => p.Id, id);
+            await _DbContext.DairySperms.DeleteOneAsync(filter);
         }
 
-        public async Task<DairySperm> FindDairySpermAsync(int id)
+        public async Task<DairySperm> FindDairySpermAsync(string id)
         {
-            var result = await _DbContext.DairySperms.FirstOrDefaultAsync(x => x.Id == id);
-            
+            var filter = Builders<DairySperm>.Filter.Eq("Id", id);
+            var result =await _DbContext.DairySperms.Find(filter).FirstOrDefaultAsync();
+
             if (result != null)
             {
                 return result;
             }
+
 
             throw new Exception("dairy sperm not found | DairySpermsRepository/FindDairySpermsAsync");
 
@@ -55,8 +58,8 @@ namespace SpermCatalog.DataAccess.Repositories
 
         public async Task<List<DairySperm>> GetDairySpermsAsync()
         {
-            var result = await _DbContext.DairySperms.ToListAsync();
-            
+            var result = await _DbContext.DairySperms.FindSync(_ => true).ToListAsync();
+
             if (result != null)
             {
                 return result;
@@ -65,13 +68,9 @@ namespace SpermCatalog.DataAccess.Repositories
             throw new Exception("dairy sperm is empty | DairySpermsRepository/DairySpermsSpermsAsync");
         }
 
-        public void UpdateDairySperm(DairySperm dairySperm)
+        public async Task UpdateDairySpermAsync(DairySperm dairySperm)
         {
-
-            _DbContext.DairySperms.Update(dairySperm);
-
-            
-            _DbContext.SaveChanges();
+            await _DbContext.DairySperms.ReplaceOneAsync(p => p.Id == dairySperm.Id, dairySperm);
         }
     }
 }

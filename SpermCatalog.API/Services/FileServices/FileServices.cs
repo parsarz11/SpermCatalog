@@ -1,7 +1,9 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
+using MapsterMapper;
 using SpermCatalog.API.Contracts;
 using SpermCatalog.API.models.DTOs.csvDTOs;
+using SpermCatalog.DataAccess.Entities;
 using System.Globalization;
 
 namespace SpermCatalog.API.Services.FileServices
@@ -10,16 +12,18 @@ namespace SpermCatalog.API.Services.FileServices
     {
         private readonly IDairyServices _dairyServices;
         private readonly IBeefSpermServices _beefSpermServices;
-        public FileServices(IDairyServices dairyServices, IBeefSpermServices beefSpermServices)
+        private readonly IMapper _mapper;
+        public FileServices(IDairyServices dairyServices, IBeefSpermServices beefSpermServices, IMapper mapper)
         {
             _dairyServices = dairyServices;
             _beefSpermServices = beefSpermServices;
+            _mapper = mapper;
         }
 
 
         public void DairyCsvReader(IFormFile file)
         {
-            var diarySpermList = new List<DairySpermCsvDTO>();
+            var dairySpermList = new List<AddDairySpermDTO>();
 
 
             using (var ms = new MemoryStream())
@@ -32,19 +36,20 @@ namespace SpermCatalog.API.Services.FileServices
                     
                     using (var csv = new CsvReader(stream,CultureInfo.InvariantCulture))
                     {
-                        diarySpermList = csv.GetRecords<DairySpermCsvDTO>().ToList();
+                        dairySpermList = csv.GetRecords<AddDairySpermDTO>().ToList();
                     }
                 }
             }
 
-            _dairyServices.AddDairySperms(diarySpermList);
+            var spermsList = _mapper.Map<List<DairySperm>>(dairySpermList);
+            _dairyServices.AddRangeDairySperms(spermsList);
 
         }
 
 
         public void BeefCsvReader(IFormFile file)
         {
-            var beefSpermList = new List<BeefSpermCsvDTO>();
+            var beefSpermList = new List<AddBeefSpermDTO>();
 
 
             using (var stream = new StreamReader(file.OpenReadStream()))
@@ -52,12 +57,12 @@ namespace SpermCatalog.API.Services.FileServices
 
                 using (var csv = new CsvReader(stream, CultureInfo.InvariantCulture))
                 {
-                    beefSpermList = csv.GetRecords<BeefSpermCsvDTO>().ToList();
+                    beefSpermList = csv.GetRecords<AddBeefSpermDTO>().ToList();
                 }
             }
 
-
-            _beefSpermServices.AddBeefSperms(beefSpermList);
+            var spermsList = _mapper.Map<List<BeefSperm>>(beefSpermList);
+            _beefSpermServices.AddRangeBeefSperms(spermsList);
         }
 
 

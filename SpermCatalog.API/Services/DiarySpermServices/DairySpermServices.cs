@@ -1,9 +1,7 @@
 ﻿using MapsterMapper;
-using Microsoft.IdentityModel.Tokens;
 using SpermCatalog.API.Contracts;
 using SpermCatalog.API.models.DTOs.csvDTOs;
 using SpermCatalog.API.models.DTOs.Filters;
-using SpermCatalog.API.models.DTOs.ResponseDTOs;
 using SpermCatalog.DataAccess.Contracts;
 using SpermCatalog.DataAccess.Entities;
 using System.Text.Json;
@@ -21,13 +19,16 @@ namespace SpermCatalog.API.Services.DiarySpermServices
             _mapper = mapper;
         }
 
-        public void AddDairySperms(List<DairySpermCsvDTO> spermDTO)
+        public void AddRangeDairySperms(List<DairySperm> spermList)
         {
-            var spermsList = _mapper.Map<List<DairySperm>>(spermDTO);
-            _DairyRepo.AddDairySpermsListAsync(spermsList);
+            
+            _DairyRepo.AddRangeDairySpermsAsync(spermList);
         }
 
-
+        public void AddDairySperm(DairySperm dairySperm)
+        {
+            _DairyRepo.AddDairySpermAsync(dairySperm);
+        }
 
         public List<DairySperm> FilterDairySperms(DairyFilterDTO dairyFilterDTO)
         {
@@ -45,7 +46,7 @@ namespace SpermCatalog.API.Services.DiarySpermServices
                 return response;
             }
 
-            if (dairyFilterDTO.Id != null && dairyFilterDTO.Id != 0)
+            if (!string.IsNullOrEmpty(dairyFilterDTO.Id))
             {
                 response = response.Where(x => x.Id == dairyFilterDTO.Id).ToList();
             }
@@ -69,6 +70,10 @@ namespace SpermCatalog.API.Services.DiarySpermServices
             if (!string.IsNullOrEmpty(dairyFilterDTO.MGS))
             {
                 response = response.Where(x => x.MGS == dairyFilterDTO.MGS).ToList();
+            }
+            if (!string.IsNullOrEmpty(dairyFilterDTO.Breed))
+            {
+                response = response.Where(x => x.Breed == dairyFilterDTO.Breed).ToList();
             }
 
             if (response.Count <= 0)
@@ -116,7 +121,7 @@ namespace SpermCatalog.API.Services.DiarySpermServices
                 }
                 else
                 {
-                    response = response.OrderByDescending(x => x.CustomOrder).ThenBy(x => x.IsNew).ThenByDescending(x => x.LNM).ThenByDescending(x => x.FM).ToList();
+                    response = response.OrderByDescending(x => x.CustomOrder).ThenBy(x => x.IsNew).ThenByDescending(x => x.FM).ThenByDescending(x => x.LNM).ThenByDescending(x => x.MILK).ThenByDescending(x => x.PL).ThenByDescending(x => x.TPI).ToList();
                 }
 
             }
@@ -133,19 +138,19 @@ namespace SpermCatalog.API.Services.DiarySpermServices
         }
 
 
-        public DairySperm FindSperm(int id)
+        public DairySperm FindSperm(string id)
         {
             return _DairyRepo.FindDairySpermAsync(id).Result;
         }
 
         public void UpdateDairySperm(DairySperm dairySperm)
         {
-            _DairyRepo.UpdateDairySperm(dairySperm);
+            _DairyRepo.UpdateDairySpermAsync(dairySperm);
         }
 
-        public void DeleteSperm(int id)
+        public void DeleteSperm(string id)
         {
-            _DairyRepo.DeleteDairySperm(id);
+            _DairyRepo.DeleteDairySpermAsync(id);
         }
 
         public void DeleteAllSperms()

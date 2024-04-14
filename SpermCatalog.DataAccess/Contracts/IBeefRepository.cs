@@ -10,10 +10,11 @@ namespace SpermCatalog.DataAccess.Contracts
     public interface IBeefRepository
     {
         Task<List<BeefSperm>> GetBeefSpermsAsync();
-        Task AddBeefSpermsListAsync(List<BeefSperm> beefSperms);
-        Task<BeefSperm> FindBeefSpermAsync(int id);
-        public void UpdateBeefSperm(BeefSperm beefSperm);
+        Task AddRangeBeefSpermsAsync(List<BeefSperm> beefSperms);
+        Task AddBeefSpermAsync(BeefSperm beefSperm);
+        Task<BeefSperm> FindBeefSpermAsync(string id);
+        Task UpdateBeefSpermAsync(BeefSperm beefSperm);
         Task DeleteAllBeefSpermsAsync();
-        void DeleteBeefSperm(int id);
+        Task DeleteBeefSpermAsync(string id);
     }
 }

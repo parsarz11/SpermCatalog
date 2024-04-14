@@ -1,4 +1,4 @@
-﻿using CsvHelper.Configuration.Attributes;
+﻿using System.ComponentModel;
 
 namespace SpermCatalog.API.models.DTOs.csvDTOs
 {
@@ -34,6 +34,7 @@ namespace SpermCatalog.API.models.DTOs.csvDTOs
 
 
         public bool IsNew { get; set; }
-        public int CustomOrder { get; set; };
+        [DefaultValue(999)]
+        public int? CustomOrder { get; set; }
     }
 }

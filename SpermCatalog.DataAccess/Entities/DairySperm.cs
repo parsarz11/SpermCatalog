@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
 
 namespace SpermCatalog.DataAccess.Entities
 {
     public class DairySperm
     {
-        public int Id { get; set; } 
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; } 
         public string RegNo { get; set; }
         public string NAAB_CODE { get; set; }
         public string NAME { get; set; }

@@ -7,11 +7,12 @@ namespace SpermCatalog.API.Contracts
 {
     public interface IDairyServices
     {
-        void AddDairySperms(List<DairySpermCsvDTO> spermDTO);
+        void AddRangeDairySperms(List<DairySperm> spermList);
+        void AddDairySperm(DairySperm dairySperm);
         List<DairySperm> FilterDairySperms(DairyFilterDTO dairyFilterDTO);
-        DairySperm FindSperm(int id);
+        DairySperm FindSperm(string id);
         void UpdateDairySperm(DairySperm dairySperm);
-        void DeleteSperm(int id);
+        void DeleteSperm(string id);
         void DeleteAllSperms();
 
     }

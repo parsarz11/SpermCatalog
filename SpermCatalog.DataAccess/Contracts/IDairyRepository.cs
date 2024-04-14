@@ -10,10 +10,12 @@ namespace SpermCatalog.DataAccess.Contracts
     public interface IDairyRepository
     {
         Task<List<DairySperm>> GetDairySpermsAsync();
-        Task AddDairySpermsListAsync(List<DairySperm> dairySperms);
-        Task<DairySperm> FindDairySpermAsync(int id);
-        void UpdateDairySperm(DairySperm dairySperm);
+        Task AddRangeDairySpermsAsync(List<DairySperm> dairySperms);
+        Task AddDairySpermAsync(DairySperm dairySperm);
+
+        Task<DairySperm> FindDairySpermAsync(string id);
+        Task UpdateDairySpermAsync(DairySperm dairySperm);
         Task DeleteAllDairySpermsAsync();
-        void DeleteDairySperm(int id);
+        Task DeleteDairySpermAsync(string id);
     }
 }

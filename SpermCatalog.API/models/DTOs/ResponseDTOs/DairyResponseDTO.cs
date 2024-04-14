@@ -2,10 +2,12 @@
 {
     public class DairyResponseDTO
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
+
         public string RegNo { get; set; }
         public string NAAB_CODE { get; set; }
         public string NAME { get; set; }
+        public string Breed { get; set; }
 
         public double ICC { get; set; }
         public double LNM { get; set; }

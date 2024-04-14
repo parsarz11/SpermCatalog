@@ -24,13 +24,15 @@ namespace SpermCatalog.API.Services.BeefSpermServices
         }
 
 
-        public void AddBeefSperms(List<BeefSpermCsvDTO> beefSpermCsvDTOs)
+        public void AddRangeBeefSperms(List<BeefSperm> spermList)
         {            
-            var beefSpermList = _mapper.Map<List<BeefSperm>>(beefSpermCsvDTOs);
-            _beefRepo.AddBeefSpermsListAsync(beefSpermList);
+            _beefRepo.AddRangeBeefSpermsAsync(spermList);
         }
 
-
+        public void AddBeefSperm(BeefSperm beefSperm)
+        {
+            _beefRepo.AddBeefSpermAsync(beefSperm);
+        }
 
 
 
@@ -47,7 +49,7 @@ namespace SpermCatalog.API.Services.BeefSpermServices
                 return response;
             }
 
-            if(beefFilterDTO.Id != null && beefFilterDTO.Id != 0)
+            if(!string.IsNullOrEmpty(beefFilterDTO.Id))
             {
                 response = response.Where(x => x.Id == beefFilterDTO.Id).ToList();
             }
@@ -118,7 +120,7 @@ namespace SpermCatalog.API.Services.BeefSpermServices
                 }
                 else
                 {
-                    response = response.OrderByDescending(x => x.CustomOrder).ThenBy(x => x.IsNew).ThenByDescending(x => x.PCAR).ThenByDescending(x => x.CR).ToList();
+                    response = response.OrderByDescending(x => x.CustomOrder).ThenBy(x => x.IsNew).ThenByDescending(x => x.SCE).ToList();
                 }
 
             }
@@ -134,19 +136,19 @@ namespace SpermCatalog.API.Services.BeefSpermServices
         }
 
 
-        public BeefSperm FindSperm(int id)
+        public BeefSperm FindSperm(string id)
         {
             return _beefRepo.FindBeefSpermAsync(id).Result;
         }
         
         public void UpdateBeefSperm(BeefSperm beefSperm)
         {
-            _beefRepo.UpdateBeefSperm(beefSperm);
+            _beefRepo.UpdateBeefSpermAsync(beefSperm);
         }
 
-        public void DeleteSperm(int id)
+        public void DeleteSperm(string id)
         {
-            _beefRepo.DeleteBeefSperm(id);
+            _beefRepo.DeleteBeefSpermAsync(id);
         }
 
         public void DeleteAllSperms()

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SpermCatalog.API.Contracts;
+using SpermCatalog.API.models.DTOs.csvDTOs;
 using SpermCatalog.API.models.DTOs.Filters;
 using SpermCatalog.API.models.DTOs.ResponseDTOs;
 using SpermCatalog.DataAccess.Contracts;
@@ -21,6 +22,13 @@ namespace SpermCatalog.API.Controllers
             _mapper = mapper;
         }
 
+        [HttpPost("Add")]
+        public IActionResult AddDairySperm(AddDairySpermDTO spermDTO)
+        {
+            var dairySperm = _mapper.Map<DairySperm>(spermDTO);
+            _DairyServices.AddDairySperm(dairySperm);
+            return Ok();
+        }
 
         [HttpGet("List")]
         public IActionResult List([FromQuery]DairyFilterDTO? dairyFilterDTO) 
@@ -32,7 +40,7 @@ namespace SpermCatalog.API.Controllers
 
 
         [HttpGet("Find")]
-        public IActionResult FindSperm(int id)
+        public IActionResult FindSperm(string id)
         {
             var sperm = _DairyServices.FindSperm(id);
             var mappedSperm = _mapper.Map<DairyResponseDTO>(sperm);
@@ -47,7 +55,7 @@ namespace SpermCatalog.API.Controllers
         }
 
         [HttpDelete("Delete")]
-        public IActionResult DeleteSperm(int id)
+        public IActionResult DeleteSperm(string id)
         {
             _DairyServices.DeleteSperm(id);
             return Ok();

@@ -7,11 +7,12 @@ namespace SpermCatalog.API.Contracts
 {
     public interface IBeefSpermServices
     {
-        void AddBeefSperms(List<BeefSpermCsvDTO> spermDTO);
+        void AddRangeBeefSperms(List<BeefSperm> spermList);
+        void AddBeefSperm(BeefSperm beefSperm);
         List<BeefSperm> FilterBeefSperms(BeefFilterDTO beefFilterDTO);
-        BeefSperm FindSperm(int id);
+        BeefSperm FindSperm(string id);
         void UpdateBeefSperm(BeefSperm beefSperm);
-        void DeleteSperm(int id);
+        void DeleteSperm(string id);
         void DeleteAllSperms();
     }
 }

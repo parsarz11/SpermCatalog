@@ -1,20 +1,28 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Extensions.Options;
+using MongoDB.Driver;
+using SpermCatalog.DataAccess.Contracts;
 using SpermCatalog.DataAccess.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SpermCatalog.DataAccess.DatabaseContext
 {
-    public class SpermCatalogDbContext : DbContext
+    public class SpermCatalogDbContext : ISpermCatalogDbContext 
     {
-        public SpermCatalogDbContext(DbContextOptions options) : base(options)
+        private readonly MongoDbConfigurations _mongoDbConfigs;
+        private IMongoDatabase _database;
+        public SpermCatalogDbContext(IOptions<MongoDbConfigurations> configs)
         {
+            _mongoDbConfigs = configs.Value;
+
+            MongoClient mongoClient = new MongoClient(_mongoDbConfigs.ConnectionString);
+            _database = mongoClient.GetDatabase(_mongoDbConfigs.DatabaseName);
+
+            DairySperms = _database.GetCollection<DairySperm>("Dairy");
+            BeefSperms = _database.GetCollection<BeefSperm>("Beef");
         }
 
-        public DbSet<BeefSperm> BeefSperms { get; set; }
-        public DbSet<DairySperm> DairySperms { get; set; }
+        public IMongoCollection<DairySperm> DairySperms { get; set; }
+        public IMongoCollection<BeefSperm> BeefSperms { get; set; }
+
+
     }
 }

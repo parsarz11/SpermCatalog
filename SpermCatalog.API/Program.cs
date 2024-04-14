@@ -1,10 +1,8 @@
-using Microsoft.EntityFrameworkCore;
 using SpermCatalog.DataAccess.DatabaseContext;
 using SpermCatalog.API.Extenssions;
 using SpermCatalog.API.MiddleWares;
 using SpermCatalog.API.Extenssions.configs;
 using Serilog;
-using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,11 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 
-builder.Services.AddDbContext<SpermCatalogDbContext>(config =>
-    {
-        config.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
-    }
-);
+builder.Services.Configure<MongoDbConfigurations>(builder.Configuration.GetSection("MongoDbConfigurations"));
 
 builder.Services.AddDependencies();
 

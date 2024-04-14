@@ -1,50 +1,49 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using SpermCatalog.DataAccess.Contracts;
-using SpermCatalog.DataAccess.DatabaseContext;
 using SpermCatalog.DataAccess.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SpermCatalog.DataAccess.Repositories
 {
     public class BeefSpermRepository : IBeefRepository
     {
-        private readonly SpermCatalogDbContext _DbContext;
+        private readonly ISpermCatalogDbContext _DbContext;
 
-        public BeefSpermRepository(SpermCatalogDbContext dbContext)
+        public BeefSpermRepository(ISpermCatalogDbContext dbContext)
         {
             _DbContext = dbContext;
         }
 
-        public async Task AddBeefSpermsListAsync(List<BeefSperm> beefSperms)
+        public async Task AddRangeBeefSpermsAsync(List<BeefSperm> beefSperms)
         {
             if (beefSperms == null)
             {
                 throw new Exception("beef sperm is null| BeefSpermRepository/AddBeefSpermsListAsync");
             }
-            await _DbContext.BeefSperms.AddRangeAsync(beefSperms);
-            _DbContext.SaveChanges();
+            await _DbContext.BeefSperms.InsertManyAsync(beefSperms);
+        }
+
+        public async Task AddBeefSpermAsync(BeefSperm beefSperm)
+        {
+            await _DbContext.BeefSperms.InsertOneAsync(beefSperm);
         }
 
         public async Task DeleteAllBeefSpermsAsync()
         {
-            await _DbContext.BeefSperms.ExecuteDeleteAsync();
+            await _DbContext.BeefSperms.DeleteManyAsync(new BsonDocument());
         }
 
-        public void DeleteBeefSperm(int id)
+        public async Task DeleteBeefSpermAsync(string id)
         {
-            BeefSperm beefSperm = FindBeefSpermAsync(id).Result;
-            _DbContext.BeefSperms.Remove(beefSperm);
-            _DbContext.SaveChanges();
+            var filter = Builders<BeefSperm>.Filter.Eq(p => p.Id, id);
+            await _DbContext.BeefSperms.DeleteOneAsync(filter);
 
         }
 
-        public async Task<BeefSperm> FindBeefSpermAsync(int id)
+        public async Task<BeefSperm> FindBeefSpermAsync(string id)
         {
-            var result = await _DbContext.BeefSperms.FirstOrDefaultAsync(x => x.Id == id);
+            var filter = Builders<BeefSperm>.Filter.Eq("Id", id);
+            var result = await _DbContext.BeefSperms.Find(filter).FirstOrDefaultAsync();
 
             if (result != null)
             {
@@ -57,7 +56,7 @@ namespace SpermCatalog.DataAccess.Repositories
 
         public async Task<List<BeefSperm>> GetBeefSpermsAsync()
         {
-            var result = await _DbContext.BeefSperms.ToListAsync();
+            var result = await _DbContext.BeefSperms.FindSync(_ => true).ToListAsync();
 
             if (result != null)
             {
@@ -67,12 +66,9 @@ namespace SpermCatalog.DataAccess.Repositories
             throw new Exception("beef sperm is empty | BeefSpermRepository/GetBeefSpermsAsync");
         }
 
-        public void UpdateBeefSperm(BeefSperm beefSperm)
+        public async Task UpdateBeefSpermAsync(BeefSperm beefSperm)
         {
-
-            _DbContext.BeefSperms.Update(beefSperm);
-            _DbContext.SaveChanges();
-            
+            await _DbContext.BeefSperms.ReplaceOneAsync(p => p.Id == beefSperm.Id, beefSperm);
         }
     }
 }

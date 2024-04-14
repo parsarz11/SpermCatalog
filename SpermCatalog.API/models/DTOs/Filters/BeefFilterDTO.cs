@@ -2,7 +2,7 @@
 {
     public class BeefFilterDTO
     {
-        public int? Id { get; set; }
+        public string? Id { get; set; }
         public string? RegNo { get; set; }
         public string? BREED { get; set; }
         public string? NAME { get; set; }
