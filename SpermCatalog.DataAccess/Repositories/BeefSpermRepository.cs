@@ -16,10 +16,6 @@ namespace SpermCatalog.DataAccess.Repositories
 
         public async Task AddRangeBeefSpermsAsync(List<BeefSperm> beefSperms)
         {
-            if (beefSperms == null)
-            {
-                throw new Exception("beef sperm is null| BeefSpermRepository/AddBeefSpermsListAsync");
-            }
             await _DbContext.BeefSperms.InsertManyAsync(beefSperms);
         }
 
@@ -44,26 +40,13 @@ namespace SpermCatalog.DataAccess.Repositories
         {
             var filter = Builders<BeefSperm>.Filter.Eq("Id", id);
             var result = await _DbContext.BeefSperms.Find(filter).FirstOrDefaultAsync();
-
-            if (result != null)
-            {
-                return result;
-            }
-
-            throw new Exception("beef Sperm not found | BeefSpermRepository/FindBeefSpermAsync");
-
+            return result;
         }
 
         public async Task<List<BeefSperm>> GetBeefSpermsAsync()
         {
             var result = await _DbContext.BeefSperms.FindSync(_ => true).ToListAsync();
-
-            if (result != null)
-            {
-                return result;
-            }
-
-            throw new Exception("beef sperm is empty | BeefSpermRepository/GetBeefSpermsAsync");
+            return result;
         }
 
         public async Task UpdateBeefSpermAsync(BeefSperm beefSperm)

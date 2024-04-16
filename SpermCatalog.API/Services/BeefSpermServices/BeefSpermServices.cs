@@ -1,5 +1,6 @@
 ﻿using MapsterMapper;
 using SpermCatalog.API.Contracts;
+using SpermCatalog.API.Exceptions;
 using SpermCatalog.API.models.DTOs.csvDTOs;
 using SpermCatalog.API.models.DTOs.Filters;
 using SpermCatalog.API.models.DTOs.ResponseDTOs;
@@ -25,12 +26,22 @@ namespace SpermCatalog.API.Services.BeefSpermServices
 
 
         public void AddRangeBeefSperms(List<BeefSperm> spermList)
-        {            
+        {
+            if (spermList == null)
+            {
+                throw new BeefSpermInvalidDataException();
+            }
+
             _beefRepo.AddRangeBeefSpermsAsync(spermList);
         }
 
         public void AddBeefSperm(BeefSperm beefSperm)
         {
+            if (beefSperm == null)
+            {
+                throw new BeefSpermInvalidDataException();
+            }
+
             _beefRepo.AddBeefSpermAsync(beefSperm);
         }
 
@@ -43,6 +54,12 @@ namespace SpermCatalog.API.Services.BeefSpermServices
                 .ThenByDescending(x => x.IsNew)
                 .ThenBy(x => x.SCE)
                 .ToList();
+
+
+            if (response == null)
+            {
+                throw new BeefSpermNotFoundException();
+            }
 
             if (beefFilterDTO == null)
             {
@@ -75,10 +92,6 @@ namespace SpermCatalog.API.Services.BeefSpermServices
                 response = response.Where(x => x.MGS == beefFilterDTO.MGS).ToList();
             }
 
-            if (response.Count <= 0)
-            {
-                throw new Exception("Data with those sperm filters not found| BeefSpermServices/FilterBeefSperms");
-            }
 
             if (!string.IsNullOrEmpty(beefFilterDTO.Range))
             {
@@ -132,17 +145,34 @@ namespace SpermCatalog.API.Services.BeefSpermServices
                 }
             }
 
+            if (response == null)
+            {
+                throw new BeefSpermFilterException();
+            }
+
             return response;
         }
 
 
         public BeefSperm FindSperm(string id)
         {
-            return _beefRepo.FindBeefSpermAsync(id).Result;
+            var result = _beefRepo.FindBeefSpermAsync(id).Result;
+
+            if (result == null) 
+            {
+                throw new BeefSpermNotFoundException(id);
+            }
+
+            return result;
         }
         
         public void UpdateBeefSperm(BeefSperm beefSperm)
         {
+            if (beefSperm == null)
+            {
+                throw new BeefSpermInvalidDataException();
+            }
+
             _beefRepo.UpdateBeefSpermAsync(beefSperm);
         }
 

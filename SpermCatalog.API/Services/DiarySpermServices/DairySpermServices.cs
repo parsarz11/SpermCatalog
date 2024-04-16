@@ -1,5 +1,6 @@
 ﻿using MapsterMapper;
 using SpermCatalog.API.Contracts;
+using SpermCatalog.API.Exceptions;
 using SpermCatalog.API.models.DTOs.csvDTOs;
 using SpermCatalog.API.models.DTOs.Filters;
 using SpermCatalog.DataAccess.Contracts;
@@ -21,12 +22,21 @@ namespace SpermCatalog.API.Services.DiarySpermServices
 
         public void AddRangeDairySperms(List<DairySperm> spermList)
         {
-            
+            if (spermList == null)
+            {
+                throw new DairySpermInvalidException();
+            }
+
             _DairyRepo.AddRangeDairySpermsAsync(spermList);
         }
 
         public void AddDairySperm(DairySperm dairySperm)
         {
+            if (dairySperm == null)
+            {
+                throw new DairySpermInvalidException();
+            }
+
             _DairyRepo.AddDairySpermAsync(dairySperm);
         }
 
@@ -40,6 +50,11 @@ namespace SpermCatalog.API.Services.DiarySpermServices
                 .ThenBy(x => x.PL)
                 .ThenBy(x => x.TPI)
                 .ToList();
+
+            if (response == null)
+            {
+                throw new DairySpermNotFoundException();
+            }
 
             if (dairyFilterDTO == null)
             {
@@ -76,10 +91,6 @@ namespace SpermCatalog.API.Services.DiarySpermServices
                 response = response.Where(x => x.Breed == dairyFilterDTO.Breed).ToList();
             }
 
-            if (response.Count <= 0)
-            {
-                throw new Exception("Data with those sperm filters not found| DairySpermsServices/FilterDairySperms");
-            }
 
 
             if (!string.IsNullOrEmpty(dairyFilterDTO.Range))
@@ -132,7 +143,11 @@ namespace SpermCatalog.API.Services.DiarySpermServices
                     response = response.OrderBy(x => x.GetType().GetProperty(dairyFilterDTO.OrderBy).GetValue(x)).ToList();
                 }
             }
-            
+
+            if (response == null)
+            {
+                throw new DairySpermFilterException();
+            }
 
             return response;
         }
@@ -140,11 +155,23 @@ namespace SpermCatalog.API.Services.DiarySpermServices
 
         public DairySperm FindSperm(string id)
         {
-            return _DairyRepo.FindDairySpermAsync(id).Result;
+            var result = _DairyRepo.FindDairySpermAsync(id).Result;
+
+            if (result == null)
+            {
+                throw new DairySpermNotFoundException(id);
+            }
+
+            return result;
         }
 
         public void UpdateDairySperm(DairySperm dairySperm)
         {
+            if (dairySperm == null)
+            {
+                throw new DairySpermInvalidException();
+            }
+
             _DairyRepo.UpdateDairySpermAsync(dairySperm);
         }
 
