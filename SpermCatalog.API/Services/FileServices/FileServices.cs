@@ -2,6 +2,7 @@
 using CsvHelper.Configuration;
 using MapsterMapper;
 using SpermCatalog.API.Contracts;
+using SpermCatalog.API.Exceptions;
 using SpermCatalog.API.models.DTOs.csvDTOs;
 using SpermCatalog.DataAccess.Entities;
 using System.Globalization;
@@ -40,7 +41,10 @@ namespace SpermCatalog.API.Services.FileServices
                     }
                 }
             }
-
+            if (dairySpermList.Count <=0)
+            {
+                throw new FileException();
+            }
             var spermsList = _mapper.Map<List<DairySperm>>(dairySpermList);
             _dairyServices.AddRangeDairySperms(spermsList);
 
@@ -60,7 +64,10 @@ namespace SpermCatalog.API.Services.FileServices
                     beefSpermList = csv.GetRecords<AddBeefSpermDTO>().ToList();
                 }
             }
-
+            if (beefSpermList.Count <= 0)
+            {
+                throw new FileException();
+            }
             var spermsList = _mapper.Map<List<BeefSperm>>(beefSpermList);
             _beefSpermServices.AddRangeBeefSperms(spermsList);
         }
