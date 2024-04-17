@@ -5,6 +5,7 @@ using SpermCatalog.API.models.DTOs.csvDTOs;
 using SpermCatalog.API.models.DTOs.Filters;
 using SpermCatalog.DataAccess.Contracts;
 using SpermCatalog.DataAccess.Entities;
+using System.Collections.Generic;
 using System.Text.Json;
 
 namespace SpermCatalog.API.Services.DiarySpermServices
@@ -61,90 +62,17 @@ namespace SpermCatalog.API.Services.DiarySpermServices
                 return response;
             }
 
-            if (!string.IsNullOrEmpty(dairyFilterDTO.Id))
-            {
-                response = response.Where(x => x.Id == dairyFilterDTO.Id).ToList();
-            }
-
-            if (!string.IsNullOrEmpty(dairyFilterDTO.RegNo))
-            {
-                response = response.Where(x => x.RegNo == dairyFilterDTO.RegNo).ToList();
-            }
-            if (!string.IsNullOrEmpty(dairyFilterDTO.NAAB_CODE))
-            {
-                response = response.Where(x => x.NAAB_CODE == dairyFilterDTO.NAAB_CODE).ToList();
-            }
-            if (!string.IsNullOrEmpty(dairyFilterDTO.NAME))
-            {
-                response = response.Where(x => x.NAME == dairyFilterDTO.NAME).ToList();
-            }
-            if (!string.IsNullOrEmpty(dairyFilterDTO.SIRE))
-            {
-                response = response.Where(x => x.SIRE == dairyFilterDTO.SIRE).ToList();
-            }
-            if (!string.IsNullOrEmpty(dairyFilterDTO.MGS))
-            {
-                response = response.Where(x => x.MGS == dairyFilterDTO.MGS).ToList();
-            }
-            if (!string.IsNullOrEmpty(dairyFilterDTO.Breed))
-            {
-                response = response.Where(x => x.Breed == dairyFilterDTO.Breed).ToList();
-            }
-
-
+            response = StringsFilter(response,dairyFilterDTO);
 
             if (!string.IsNullOrEmpty(dairyFilterDTO.Range))
             {
 
-                var range = JsonSerializer.Deserialize<RangeListModel>(dairyFilterDTO.Range);
-
-
-                foreach (var index in range.Filters)
-                {
-
-                    if (index.MinValue != 0 && index.MaxValue != 0)
-                    {
-                        response = response.Where(x => (double)x.GetType().GetProperty(index.Index).GetValue(x)
-                        >= index.MinValue && (double)x.GetType().GetProperty(index.Index).GetValue(x) <= index.MaxValue).ToList();
-                    }
-
-                    else if (index.MinValue != 0)
-                    {
-                        response = response.Where(x => (double)x.GetType().GetProperty(index.Index).GetValue(x)
-                        >= index.MinValue).ToList();
-                    }
-
-                    else if (index.MaxValue != 0)
-                    {
-                        response = response.Where(x => (double)x.GetType().GetProperty(index.Index).GetValue(x)
-                        <= index.MaxValue).ToList();
-                    }
-                }
-
-
+                response = RangeFiltering(response, dairyFilterDTO.Range);
             }
 
-            if (dairyFilterDTO.IsDescending)
-            {
-                if (!string.IsNullOrEmpty(dairyFilterDTO.OrderBy))
-                {
-                    response = response.OrderByDescending(x => x.GetType().GetProperty(dairyFilterDTO.OrderBy).GetValue(x)).ToList();
-                }
-                else
-                {
-                    response = response.OrderByDescending(x => x.CustomOrder).ThenBy(x => x.IsNew).ThenByDescending(x => x.FM).ThenByDescending(x => x.LNM).ThenByDescending(x => x.MILK).ThenByDescending(x => x.PL).ThenByDescending(x => x.TPI).ToList();
-                }
+            response = OrderingDairySperms(response, dairyFilterDTO.IsDescending, dairyFilterDTO.OrderBy);
 
-            }
-            else
-            {
-                if (!string.IsNullOrEmpty(dairyFilterDTO.OrderBy))
-                {
-                    response = response.OrderBy(x => x.GetType().GetProperty(dairyFilterDTO.OrderBy).GetValue(x)).ToList();
-                }
-            }
-
-            if (response == null)
+            if (response.Count <= 0)
             {
                 throw new DairySpermFilterException();
             }
@@ -152,6 +80,95 @@ namespace SpermCatalog.API.Services.DiarySpermServices
             return response;
         }
 
+        private List<DairySperm> OrderingDairySperms(List<DairySperm> dairySperms,bool isDescending,string orderBy)
+        {
+            if (isDescending)
+            {
+                if (!string.IsNullOrEmpty(orderBy))
+                {
+                    dairySperms = dairySperms.OrderByDescending(x => x.GetType().GetProperty(orderBy).GetValue(x)).ToList();
+                }
+                else
+                {
+                    dairySperms = dairySperms.OrderByDescending(x => x.CustomOrder).ThenBy(x => x.IsNew).ThenByDescending(x => x.FM).ThenByDescending(x => x.LNM).ThenByDescending(x => x.MILK).ThenByDescending(x => x.PL).ThenByDescending(x => x.TPI).ToList();
+                }
+
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(orderBy))
+                {
+                    dairySperms = dairySperms.OrderBy(x => x.GetType().GetProperty(orderBy).GetValue(x)).ToList();
+                }
+            }
+
+            return dairySperms;
+        }
+
+        private List<DairySperm> RangeFiltering(List<DairySperm> dairySperms,string range)
+        {
+            var jsonDeserializer = JsonSerializer.Deserialize<RangeListModel>(range);
+
+
+            foreach (var index in jsonDeserializer.Filters)
+            {
+
+                if (index.MinValue != 0 && index.MaxValue != 0)
+                {
+                    dairySperms = dairySperms.Where(x => (double)x.GetType().GetProperty(index.Index).GetValue(x)
+                    >= index.MinValue && (double)x.GetType().GetProperty(index.Index).GetValue(x) <= index.MaxValue).ToList();
+                }
+
+                else if (index.MinValue != 0)
+                {
+                    dairySperms = dairySperms.Where(x => (double)x.GetType().GetProperty(index.Index).GetValue(x)
+                    >= index.MinValue).ToList();
+                }
+
+                else if (index.MaxValue != 0)
+                {
+                    dairySperms = dairySperms.Where(x => (double)x.GetType().GetProperty(index.Index).GetValue(x)
+                    <= index.MaxValue).ToList();
+                }
+            }
+
+            return dairySperms;
+        }
+
+        private List<DairySperm> StringsFilter(List<DairySperm> dairySperms,DairyFilterDTO dairyFilterDTO)
+        {
+            if (!string.IsNullOrEmpty(dairyFilterDTO.Id))
+            {
+                dairySperms = dairySperms.Where(x => x.Id == dairyFilterDTO.Id).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(dairyFilterDTO.RegNo))
+            {
+                dairySperms = dairySperms.Where(x => x.RegNo == dairyFilterDTO.RegNo).ToList();
+            }
+            if (!string.IsNullOrEmpty(dairyFilterDTO.NAAB_CODE))
+            {
+                dairySperms = dairySperms.Where(x => x.NAAB_CODE == dairyFilterDTO.NAAB_CODE).ToList();
+            }
+            if (!string.IsNullOrEmpty(dairyFilterDTO.NAME))
+            {
+                dairySperms = dairySperms.Where(x => x.NAME == dairyFilterDTO.NAME).ToList();
+            }
+            if (!string.IsNullOrEmpty(dairyFilterDTO.SIRE))
+            {
+                dairySperms = dairySperms.Where(x => x.SIRE == dairyFilterDTO.SIRE).ToList();
+            }
+            if (!string.IsNullOrEmpty(dairyFilterDTO.MGS))
+            {
+                dairySperms = dairySperms.Where(x => x.MGS == dairyFilterDTO.MGS).ToList();
+            }
+            if (!string.IsNullOrEmpty(dairyFilterDTO.Breed))
+            {
+                dairySperms = dairySperms.Where(x => x.Breed == dairyFilterDTO.Breed).ToList();
+            }
+
+            return dairySperms;
+        }
 
         public DairySperm FindSperm(string id)
         {

@@ -7,6 +7,7 @@ using SpermCatalog.API.models.DTOs.ResponseDTOs;
 using SpermCatalog.DataAccess.Contracts;
 using SpermCatalog.DataAccess.Entities;
 using System.Collections;
+using System.Collections.Generic;
 using System.Text.Json;
 
 namespace SpermCatalog.API.Services.BeefSpermServices
@@ -66,91 +67,110 @@ namespace SpermCatalog.API.Services.BeefSpermServices
                 return response;
             }
 
-            if(!string.IsNullOrEmpty(beefFilterDTO.Id))
-            {
-                response = response.Where(x => x.Id == beefFilterDTO.Id).ToList();
-            }
-
-            if (!string.IsNullOrEmpty(beefFilterDTO.RegNo))
-            {
-                response = response.Where(x => x.RegNo == beefFilterDTO.RegNo).ToList();
-            }
-            if (!string.IsNullOrEmpty(beefFilterDTO.BREED))
-            {
-                response = response.Where(x => x.BREED == beefFilterDTO.BREED).ToList();
-            }
-            if (!string.IsNullOrEmpty(beefFilterDTO.NAME))
-            {
-                response = response.Where(x => x.NAME == beefFilterDTO.NAME).ToList();
-            }
-            if (!string.IsNullOrEmpty(beefFilterDTO.SIRE))
-            {
-                response = response.Where(x => x.SIRE == beefFilterDTO.SIRE).ToList();
-            }
-            if (!string.IsNullOrEmpty(beefFilterDTO.MGS))
-            {
-                response = response.Where(x => x.MGS == beefFilterDTO.MGS).ToList();
-            }
+            response = StringsFilter(response, beefFilterDTO);
 
 
             if (!string.IsNullOrEmpty(beefFilterDTO.Range))
             {
-
-                var range = JsonSerializer.Deserialize<RangeListModel>(beefFilterDTO.Range);
-
-
-                foreach (var index in range.Filters)
-                {
-
-                    if (index.MinValue != 0 && index.MaxValue != 0)
-                    {
-                        response = response.Where(x => (double)x.GetType().GetProperty(index.Index).GetValue(x)
-                        >= index.MinValue && (double)x.GetType().GetProperty(index.Index).GetValue(x) <= index.MaxValue).ToList();
-                    }
-
-                    else if (index.MinValue != 0)
-                    {
-                        response = response.Where(x => (double)x.GetType().GetProperty(index.Index).GetValue(x)
-                        >= index.MinValue).ToList();
-                    }
-
-                    else if (index.MaxValue != 0)
-                    {
-                        response = response.Where(x => (double)x.GetType().GetProperty(index.Index).GetValue(x)
-                        <= index.MaxValue).ToList();
-                    }
-                }
-
-                
+                response = RangeFiltering(response, beefFilterDTO.Range);
             }
 
 
-            if (beefFilterDTO.IsDescending)
-            {
-                if (!string.IsNullOrEmpty(beefFilterDTO.OrderBy))
-                {
-                    response = response.OrderByDescending(x => x.GetType().GetProperty(beefFilterDTO.OrderBy).GetValue(x)).ToList();
-                }
-                else
-                {
-                    response = response.OrderByDescending(x => x.CustomOrder).ThenBy(x => x.IsNew).ThenByDescending(x => x.SCE).ToList();
-                }
+            response = OrderingBeefSperms(response, beefFilterDTO.IsDescending, beefFilterDTO.OrderBy);
 
-            }
-            else
-            {
-                if (!string.IsNullOrEmpty(beefFilterDTO.OrderBy))
-                {
-                    response = response.OrderBy(x => x.GetType().GetProperty(beefFilterDTO.OrderBy).GetValue(x)).ToList();
-                }
-            }
-
-            if (response == null)
+            if (response.Count <= 0)
             {
                 throw new BeefSpermFilterException();
             }
 
             return response;
+        }
+
+        private List<BeefSperm> StringsFilter(List<BeefSperm> beefSperms, BeefFilterDTO beefFilterDTO)
+        {
+            if (!string.IsNullOrEmpty(beefFilterDTO.Id))
+            {
+                beefSperms = beefSperms.Where(x => x.Id == beefFilterDTO.Id).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(beefFilterDTO.RegNo))
+            {
+                beefSperms = beefSperms.Where(x => x.RegNo == beefFilterDTO.RegNo).ToList();
+            }
+            if (!string.IsNullOrEmpty(beefFilterDTO.BREED))
+            {
+                beefSperms = beefSperms.Where(x => x.BREED == beefFilterDTO.BREED).ToList();
+            }
+            if (!string.IsNullOrEmpty(beefFilterDTO.NAME))
+            {
+                beefSperms = beefSperms.Where(x => x.NAME == beefFilterDTO.NAME).ToList();
+            }
+            if (!string.IsNullOrEmpty(beefFilterDTO.SIRE))
+            {
+                beefSperms = beefSperms.Where(x => x.SIRE == beefFilterDTO.SIRE).ToList();
+            }
+            if (!string.IsNullOrEmpty(beefFilterDTO.MGS))
+            {
+                beefSperms = beefSperms.Where(x => x.MGS == beefFilterDTO.MGS).ToList();
+            }
+
+            return beefSperms;
+        }
+
+        private List<BeefSperm> RangeFiltering(List<BeefSperm> beefSperms, string range)
+        {
+            var jsonDeserializer = JsonSerializer.Deserialize<RangeListModel>(range);
+
+
+            foreach (var index in jsonDeserializer.Filters)
+            {
+
+                if (index.MinValue != 0 && index.MaxValue != 0)
+                {
+                    beefSperms = beefSperms.Where(x => (double)x.GetType().GetProperty(index.Index).GetValue(x)
+                    >= index.MinValue && (double)x.GetType().GetProperty(index.Index).GetValue(x) <= index.MaxValue).ToList();
+                }
+
+                else if (index.MinValue != 0)
+                {
+                    beefSperms = beefSperms.Where(x => (double)x.GetType().GetProperty(index.Index).GetValue(x)
+                    >= index.MinValue).ToList();
+                }
+
+                else if (index.MaxValue != 0)
+                {
+                    beefSperms = beefSperms.Where(x => (double)x.GetType().GetProperty(index.Index).GetValue(x)
+                    <= index.MaxValue).ToList();
+                }
+            }
+
+            return beefSperms;
+        }
+
+
+        private List<BeefSperm> OrderingBeefSperms(List<BeefSperm> beefSperms,bool isDescending,string orderBy)
+        {
+            if (isDescending)
+            {
+                if (!string.IsNullOrEmpty(orderBy))
+                {
+                    beefSperms = beefSperms.OrderByDescending(x => x.GetType().GetProperty(orderBy).GetValue(x)).ToList();
+                }
+                else
+                {
+                    beefSperms = beefSperms.OrderByDescending(x => x.CustomOrder).ThenBy(x => x.IsNew).ThenByDescending(x => x.SCE).ToList();
+                }
+
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(orderBy))
+                {
+                    beefSperms = beefSperms.OrderBy(x => x.GetType().GetProperty(orderBy).GetValue(x)).ToList();
+                }
+            }
+
+            return beefSperms;
         }
 
 
