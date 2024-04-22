@@ -53,5 +53,10 @@ namespace SpermCatalog.DataAccess.Repositories
         {
             await _DbContext.BeefSperms.ReplaceOneAsync(p => p.Id == beefSperm.Id, beefSperm);
         }
+
+        public async Task AddRangeFilterAsync(RangeFilter rangeFilter)
+        {
+            await _DbContext.RangeFilter.InsertOneAsync(rangeFilter);
+        }
     }
 }

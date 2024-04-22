@@ -17,5 +17,6 @@ namespace SpermCatalog.DataAccess.Contracts
         Task UpdateDairySpermAsync(DairySperm dairySperm);
         Task DeleteAllDairySpermsAsync();
         Task DeleteDairySpermAsync(string id);
+        Task AddRangeFilterAsync(RangeFilter rangeFilter);
     }
 }

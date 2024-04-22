@@ -67,7 +67,7 @@ namespace SpermCatalog.API.Services.DiarySpermServices
             if (!string.IsNullOrEmpty(dairyFilterDTO.Range))
             {
 
-                response = RangeFiltering(response, dairyFilterDTO.Range);
+                response = StoreAndFilterByRange(response, dairyFilterDTO.Range);
             }
 
             response = OrderingDairySperms(response, dairyFilterDTO.IsDescending, dairyFilterDTO.OrderBy);
@@ -105,13 +105,16 @@ namespace SpermCatalog.API.Services.DiarySpermServices
             return dairySperms;
         }
 
-        private List<DairySperm> RangeFiltering(List<DairySperm> dairySperms,string range)
+        private List<DairySperm> StoreAndFilterByRange(List<DairySperm> dairySperms,string range)
         {
-            var jsonDeserializer = JsonSerializer.Deserialize<RangeListModel>(range);
+            var deserializedJson = JsonSerializer.Deserialize<RangeListModel>(range);
 
 
-            foreach (var index in jsonDeserializer.Filters)
+            foreach (var index in deserializedJson.Filters)
             {
+                //save search info
+                var rangeFilter = _mapper.Map<RangeFilter>((index, deserializedJson));
+                _DairyRepo.AddRangeFilterAsync(rangeFilter);
 
                 if (index.MinValue != 0 && index.MaxValue != 0)
                 {

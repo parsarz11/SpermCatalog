@@ -16,5 +16,6 @@ namespace SpermCatalog.DataAccess.Contracts
         Task UpdateBeefSpermAsync(BeefSperm beefSperm);
         Task DeleteAllBeefSpermsAsync();
         Task DeleteBeefSpermAsync(string id);
+        Task AddRangeFilterAsync(RangeFilter rangeFilter);
     }
 }

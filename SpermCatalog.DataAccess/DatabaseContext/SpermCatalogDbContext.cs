@@ -18,11 +18,12 @@ namespace SpermCatalog.DataAccess.DatabaseContext
 
             DairySperms = _database.GetCollection<DairySperm>("Dairy");
             BeefSperms = _database.GetCollection<BeefSperm>("Beef");
+            RangeFilter = _database.GetCollection<RangeFilter>("RangeFilter");
         }
 
         public IMongoCollection<DairySperm> DairySperms { get; set; }
         public IMongoCollection<BeefSperm> BeefSperms { get; set; }
-
+        public IMongoCollection<RangeFilter> RangeFilter { get; set; }
 
     }
 }

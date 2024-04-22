@@ -72,7 +72,7 @@ namespace SpermCatalog.API.Services.BeefSpermServices
 
             if (!string.IsNullOrEmpty(beefFilterDTO.Range))
             {
-                response = RangeFiltering(response, beefFilterDTO.Range);
+                response = StoreAndFilterByRange(response, beefFilterDTO.Range);
             }
 
 
@@ -117,13 +117,17 @@ namespace SpermCatalog.API.Services.BeefSpermServices
             return beefSperms;
         }
 
-        private List<BeefSperm> RangeFiltering(List<BeefSperm> beefSperms, string range)
+        private List<BeefSperm> StoreAndFilterByRange(List<BeefSperm> beefSperms, string range)
         {
-            var jsonDeserializer = JsonSerializer.Deserialize<RangeListModel>(range);
+            var deserializedJson = JsonSerializer.Deserialize<RangeListModel>(range);
 
 
-            foreach (var index in jsonDeserializer.Filters)
+            foreach (var index in deserializedJson.Filters)
             {
+
+                //save search info
+                var rangeFilter = _mapper.Map<RangeFilter>((index, deserializedJson));
+                _beefRepo.AddRangeFilterAsync(rangeFilter);
 
                 if (index.MinValue != 0 && index.MaxValue != 0)
                 {
