@@ -12,6 +12,7 @@ namespace SpermCatalog.DataAccess.Contracts
     {
         IMongoCollection<DairySperm> DairySperms { get; set; }
         IMongoCollection<BeefSperm> BeefSperms { get; set; }
-        IMongoCollection<RangeFilter> RangeFilter { get; set; }
+        IMongoCollection<RangeFilter> DairyRangeFilters { get; set; }
+        IMongoCollection<RangeFilter> BeefRangeFilters { get; set; }
     }
 }

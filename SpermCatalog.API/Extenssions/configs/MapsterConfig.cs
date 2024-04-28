@@ -41,6 +41,11 @@ namespace SpermCatalog.API.Extenssions.configs
                 (
                     destination => destination.UserId,
                     source => source.Item2.UserId
+                )
+                .Map
+                (
+                    destination => destination.HerdName,
+                    source => source.Item2.HerdName
                 );
 
 

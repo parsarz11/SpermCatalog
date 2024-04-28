@@ -58,7 +58,7 @@ namespace SpermCatalog.DataAccess.Repositories
 
         public async Task AddRangeFilterAsync(RangeFilter rangeFilter)
         {
-            await _DbContext.RangeFilter.InsertOneAsync(rangeFilter);
+            await _DbContext.DairyRangeFilters.InsertOneAsync(rangeFilter);
         }
     }
 }

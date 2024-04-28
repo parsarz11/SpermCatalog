@@ -16,9 +16,11 @@ namespace SpermCatalog.DataAccess.Entities
         public string Category { get; set; }
         public string? UserId { get; set; }
         public string? HerdId { get; set; }
+        public string? HerdName { get; set; }
         public string Index { get; set; }
         public double MinValue { get; set; } = -9999999;
         public double MaxValue { get; set; } = 9999999;
 
+        public DateOnly FilterDate { get; set; } = DateOnly.FromDateTime(DateTime.Now);
     }
 }
