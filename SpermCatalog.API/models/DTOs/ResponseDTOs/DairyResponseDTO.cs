@@ -29,7 +29,9 @@
 
         public string SIRE { get; set; }
         public string MGS { get; set; }
-        public int price { get; set; }
+        public string Gender { get; set; }
+        public string QuantityStatus { get; set; }
+        public int Price { get; set; }
 
         public bool IsNew { get; set; }
         public int CustomOrder { get; set; }

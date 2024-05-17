@@ -9,6 +9,8 @@
         public string? SIRE { get; set; }
         public string? MGS { get; set; }
         public string? Breed { get; set; }
+        public string? Gender { get; set; }
+        public string? QuantityStatus { get; set; }
 
         public bool IsDescending { get; set; } = false;
         public string? OrderBy { get; set; }

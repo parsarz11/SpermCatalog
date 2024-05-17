@@ -24,7 +24,9 @@ namespace SpermCatalog.DataAccess.Entities
         public double ICRC { get; set; }
 
         public string SIRE { get; set; }
-        public string MGS { get; set; } 
+        public string MGS { get; set; }
+        public string Gender { get; set; }
+        public string QuantityStatus { get; set; }
         public int Price { get; set; }
 
         public bool IsNew { get; set; }

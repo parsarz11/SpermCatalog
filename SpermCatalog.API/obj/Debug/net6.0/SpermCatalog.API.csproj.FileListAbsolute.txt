@@ -60,3 +60,4 @@ C:\Users\parsa\source\repos\SpermCatalog\SpermCatalog.API\bin\Debug\net6.0\ZstdS
 C:\Users\parsa\source\repos\SpermCatalog\SpermCatalog.API\bin\Debug\net6.0\runtimes\linux\native\libmongocrypt.so
 C:\Users\parsa\source\repos\SpermCatalog\SpermCatalog.API\bin\Debug\net6.0\runtimes\osx\native\libmongocrypt.dylib
 C:\Users\parsa\source\repos\SpermCatalog\SpermCatalog.API\bin\Debug\net6.0\runtimes\win\native\mongocrypt.dll
+C:\Users\parsa\source\repos\SpermCatalog\SpermCatalog.API\obj\Debug\net6.0\SpermCatalog.API.sourcelink.json
