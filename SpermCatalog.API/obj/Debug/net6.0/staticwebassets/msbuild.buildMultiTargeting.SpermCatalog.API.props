@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\build\SpermCatalog.API.props" />
-</Project>
