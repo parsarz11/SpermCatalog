@@ -2,11 +2,13 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SpermCatalog.API.Contracts;
+using SpermCatalog.API.models;
 using SpermCatalog.API.models.DTOs.csvDTOs;
 using SpermCatalog.API.models.DTOs.Filters;
 using SpermCatalog.API.models.DTOs.ResponseDTOs;
 using SpermCatalog.DataAccess.Contracts;
 using SpermCatalog.DataAccess.Entities;
+using static SpermCatalog.API.models.TimeSelectionModel;
 
 namespace SpermCatalog.API.Controllers
 {
@@ -68,5 +70,25 @@ namespace SpermCatalog.API.Controllers
             return Ok();
         }
 
+        [HttpGet("GetRangeFilters")]
+        public IActionResult GetRangeFilters()
+        {
+            var rangeFilters = _DairyServices.GetRangeFilters();
+            return Ok(rangeFilters);
+        }
+
+        [HttpGet("RangeFilterAvg")]
+        public IActionResult GetRangeFilterAvg(TimeSelectionEnum timeSelection)
+        {
+            var rangeFilterAverage = _DairyServices.CalculateRangeFilterAvg(timeSelection);
+            return Ok(rangeFilterAverage);
+        }
+
+        [HttpGet("RangeFilterSearchCount")]
+        public IActionResult GetRangeFilterSearchCount(TimeSelectionEnum timeSelection)
+        {
+            var searchCount = _DairyServices.CalculateRangeFilterSearchCount(timeSelection);
+            return Ok(searchCount);
+        }
     }
 }

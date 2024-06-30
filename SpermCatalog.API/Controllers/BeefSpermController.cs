@@ -6,6 +6,7 @@ using SpermCatalog.API.models.DTOs.csvDTOs;
 using SpermCatalog.API.models.DTOs.Filters;
 using SpermCatalog.API.models.DTOs.ResponseDTOs;
 using SpermCatalog.DataAccess.Entities;
+using static SpermCatalog.API.models.TimeSelectionModel;
 
 namespace SpermCatalog.API.Controllers
 {
@@ -64,6 +65,27 @@ namespace SpermCatalog.API.Controllers
         {
             _SpermServices.DeleteAllSperms();
             return Ok();
+        }
+
+        [HttpGet("GetRangeFilters")]
+        public IActionResult GetRangeFilters()
+        {
+            var rangeFilters = _SpermServices.GetRangeFilters();
+            return Ok(rangeFilters);
+        }
+
+        [HttpGet("RangeFilterAvg")]
+        public IActionResult GetRangeFilterAvg(TimeSelectionEnum timeSelection)
+        {
+            var rangeFilterAverage = _SpermServices.CalculateRangeFilterAvg(timeSelection);
+            return Ok(rangeFilterAverage);
+        }
+
+        [HttpGet("RangeFilterSearchCount")]
+        public IActionResult GetRangeFilterSearchCount(TimeSelectionEnum timeSelection)
+        {
+            var searchCount = _SpermServices.CalculateRangeFilterSearchCount(timeSelection);
+            return Ok(searchCount);
         }
     }
 }
