@@ -3,6 +3,7 @@ using SpermCatalog.API.Extenssions;
 using SpermCatalog.API.MiddleWares;
 using SpermCatalog.API.Extenssions.configs;
 using Serilog;
+using SpermCatalog.API.Extensions.configs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +22,10 @@ var logger = new LoggerConfiguration()
 builder.Logging.ClearProviders();
 builder.Logging.AddSerilog(logger);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new DateOnlyJsonConverter());
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
