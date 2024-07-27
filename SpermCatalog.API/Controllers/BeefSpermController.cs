@@ -23,16 +23,15 @@ namespace SpermCatalog.API.Controllers
         }
 
         [HttpPost("Add")]
-        public IActionResult AddBeefSperm(AddBeefSpermDTO spermDTO)
+        public async Task AddBeefSperm(AddBeefSpermDTO spermDTO)
         {
             var beefSperm = _mapper.Map<BeefSperm>(spermDTO);
-            _SpermServices.AddBeefSperm(beefSperm);
-            return Ok();
+            await _SpermServices.AddBeefSpermAsync(beefSperm);
         }
         [HttpGet("List")]
-        public IActionResult GetListOfBeefSperms([FromQuery]BeefFilterDTO? filterDTO)
+        public async Task<IActionResult> GetListOfBeefSperms([FromQuery]BeefFilterDTO? filterDTO)
         {
-            var spermList = _SpermServices.FilterBeefSperms(filterDTO);
+            var spermList = await _SpermServices.FilterBeefSpermsAsync(filterDTO);
 
             if (spermList.Count <= 0)
             {
@@ -45,9 +44,9 @@ namespace SpermCatalog.API.Controllers
 
 
         [HttpGet("Find")]
-        public IActionResult FindSperm(string id)
+        public async Task<IActionResult> FindSperm(string id)
         {
-            var sperm = _SpermServices.FindSperm(id);
+            var sperm = await _SpermServices.FindSpermAsync(id);
 
             if (sperm == null)
             {
@@ -60,44 +59,41 @@ namespace SpermCatalog.API.Controllers
         }
 
         [HttpPut("Update")]
-        public IActionResult UpdateSperm(BeefSperm BeefSperm)
+        public async Task UpdateSperm(BeefSperm BeefSperm)
         {
-            _SpermServices.UpdateBeefSperm(BeefSperm);
-            return Ok();
+            await _SpermServices.UpdateBeefSpermAsync(BeefSperm);
         }
 
         [HttpDelete("Delete")]
-        public IActionResult DeleteSperm(string id)
+        public async Task DeleteSperm(string id)
         {
-            _SpermServices.DeleteSperm(id);
-            return Ok();
+           await _SpermServices.DeleteSpermAsync(id);
         }
 
         [HttpDelete("DeleteAll")]
-        public IActionResult DeleteAll()
+        public async Task DeleteAll()
         {
-            _SpermServices.DeleteAllSperms();
-            return Ok();
+            await _SpermServices.DeleteAllSpermsAsync();
         }
 
         [HttpGet("GetRangeFilters")]
-        public IActionResult GetRangeFilters()
+        public async Task<IActionResult> GetRangeFilters()
         {
-            var rangeFilters = _SpermServices.GetRangeFilters();
+            var rangeFilters = await _SpermServices.GetRangeFiltersAsync();
             return Ok(rangeFilters);
         }
 
         [HttpGet("RangeFilterAvg")]
-        public IActionResult GetRangeFilterAvg(TimeSelectionEnum timeSelection)
+        public async Task<IActionResult> GetRangeFilterAvg(TimeSelectionEnum timeSelection)
         {
-            var rangeFilterAverage = _SpermServices.CalculateRangeFilterAvg(timeSelection);
+            var rangeFilterAverage = await _SpermServices.CalculateRangeFilterAvgAsync(timeSelection);
             return Ok(rangeFilterAverage);
         }
 
         [HttpGet("RangeFilterSearchCount")]
-        public IActionResult GetRangeFilterSearchCount(TimeSelectionEnum timeSelection)
+        public async Task<IActionResult> GetRangeFilterSearchCount(TimeSelectionEnum timeSelection)
         {
-            var searchCount = _SpermServices.CalculateRangeFilterSearchCount(timeSelection);
+            var searchCount = await _SpermServices.CalculateRangeFilterSearchCountAsync(timeSelection);
             return Ok(searchCount);
         }
     }
