@@ -36,6 +36,12 @@ namespace SpermCatalog.API.Controllers
         public IActionResult List([FromQuery]DairyFilterDTO? dairyFilterDTO) 
         {
             var spermList = _DairyServices.FilterDairySperms(dairyFilterDTO);
+
+            if (spermList.Count <= 0)
+            {
+                return Ok(spermList);
+            }
+
             var mappedList = _mapper.Map<List<DairyResponseDTO>>(spermList);
             return Ok(mappedList);
         }
@@ -45,6 +51,12 @@ namespace SpermCatalog.API.Controllers
         public IActionResult FindSperm(string id)
         {
             var sperm = _DairyServices.FindSperm(id);
+
+            if (sperm == null)
+            {
+                return Ok(new DairyResponseDTO());
+            }
+
             var mappedSperm = _mapper.Map<DairyResponseDTO>(sperm);
             return Ok(mappedSperm);
         }

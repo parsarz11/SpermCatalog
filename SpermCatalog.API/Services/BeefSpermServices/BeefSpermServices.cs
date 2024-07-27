@@ -30,7 +30,7 @@ namespace SpermCatalog.API.Services.BeefSpermServices
 
         public void AddRangeBeefSperms(List<BeefSperm> spermList)
         {
-            if (spermList == null)
+            if (spermList == null || spermList.Count <= 0)
             {
                 throw new BeefSpermInvalidDataException();
             }
@@ -59,9 +59,10 @@ namespace SpermCatalog.API.Services.BeefSpermServices
                 .ToList();
 
 
-            if (response == null)
+            if (response.Count <= 0 || response is null)
             {
-                throw new BeefSpermNotFoundException();
+                //throw new DairySpermNotFoundException();
+                return response;
             }
 
             if (beefFilterDTO == null)
@@ -184,10 +185,10 @@ namespace SpermCatalog.API.Services.BeefSpermServices
         {
             var result = _beefRepo.FindBeefSpermAsync(id).Result;
 
-            if (result == null) 
-            {
-                throw new BeefSpermNotFoundException(id);
-            }
+            //if (result == null)
+            //{
+            //    //throw new DairySpermNotFoundException(id);
+            //}
 
             return result;
         }

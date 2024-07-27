@@ -33,6 +33,12 @@ namespace SpermCatalog.API.Controllers
         public IActionResult GetListOfBeefSperms([FromQuery]BeefFilterDTO? filterDTO)
         {
             var spermList = _SpermServices.FilterBeefSperms(filterDTO);
+
+            if (spermList.Count <= 0)
+            {
+                return Ok(spermList);
+            }
+
             var mappedSpermList = _mapper.Map<List<BeefResponseDTO>>(spermList);
             return Ok(mappedSpermList);
         }
@@ -42,6 +48,13 @@ namespace SpermCatalog.API.Controllers
         public IActionResult FindSperm(string id)
         {
             var sperm = _SpermServices.FindSperm(id);
+
+            if (sperm == null)
+            {
+                
+                return Ok(new BeefResponseDTO());
+            }
+
             var mappedSperm = _mapper.Map<BeefResponseDTO>(sperm);
             return Ok(mappedSperm);
         }

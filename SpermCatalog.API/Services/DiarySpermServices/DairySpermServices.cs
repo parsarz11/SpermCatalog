@@ -25,7 +25,7 @@ namespace SpermCatalog.API.Services.DiarySpermServices
 
         public void AddRangeDairySperms(List<DairySperm> spermList)
         {
-            if (spermList == null)
+            if (spermList == null || spermList.Count <= 0)
             {
                 throw new DairySpermInvalidException();
             }
@@ -54,9 +54,10 @@ namespace SpermCatalog.API.Services.DiarySpermServices
                 .ThenBy(x => x.TPI)
                 .ToList();
 
-            if (response == null)
+            if (response.Count <= 0|| response is null)
             {
-                throw new DairySpermNotFoundException();
+                //throw new DairySpermNotFoundException();
+                return response;
             }
 
             if (dairyFilterDTO == null)
@@ -179,10 +180,10 @@ namespace SpermCatalog.API.Services.DiarySpermServices
         {
             var result = _DairyRepo.FindDairySpermAsync(id).Result;
 
-            if (result == null)
-            {
-                throw new DairySpermNotFoundException(id);
-            }
+            //if (result == null)
+            //{
+            //    //throw new DairySpermNotFoundException(id);
+            //}
 
             return result;
         }
