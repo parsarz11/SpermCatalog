@@ -9,15 +9,15 @@ namespace SpermCatalog.API.Contracts
 {
     public interface IDairyServices
     {
-        void AddRangeDairySperms(List<DairySperm> spermList);
-        void AddDairySperm(DairySperm dairySperm);
-        List<DairySperm> FilterDairySperms(DairyFilterDTO dairyFilterDTO);
-        DairySperm FindSperm(string id);
-        void UpdateDairySperm(DairySperm dairySperm);
-        void DeleteSperm(string id);
-        void DeleteAllSperms();
-        List<RangeFilter> GetRangeFilters();
-        List<RangeFilterCountModel> CalculateRangeFilterSearchCount(TimeSelectionEnum timeSelection);
-        List<AvgRangeFilterModel> CalculateRangeFilterAvg(TimeSelectionEnum timeSelection);
+        Task AddRangeDairySpermsAsync(List<DairySperm> spermList);
+        Task AddDairySpermAsync(DairySperm dairySperm);
+        Task<List<DairySperm>> FilterDairySpermsAsync(DairyFilterDTO dairyFilterDTO);
+        Task<DairySperm> FindSpermAsync(string id);
+        Task UpdateDairySpermAsync(DairySperm dairySperm);
+        Task DeleteSpermAsync(string id);
+        Task DeleteAllSpermsAsync();
+        Task<List<RangeFilter>> GetRangeFiltersAsync();
+        Task<List<RangeFilterCountModel>> CalculateRangeFilterSearchCountAsync(TimeSelectionEnum timeSelection);
+        Task<List<AvgRangeFilterModel>> CalculateRangeFilterAvgAsync(TimeSelectionEnum timeSelection);
     }
 }

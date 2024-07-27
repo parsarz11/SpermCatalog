@@ -46,7 +46,7 @@ namespace SpermCatalog.API.Services.FileServices
                 throw new FileException();
             }
             var spermsList = _mapper.Map<List<DairySperm>>(dairySpermList);
-            _dairyServices.AddRangeDairySperms(spermsList);
+            _dairyServices.AddRangeDairySpermsAsync(spermsList);
 
         }
 
@@ -69,7 +69,7 @@ namespace SpermCatalog.API.Services.FileServices
                 throw new FileException();
             }
             var spermsList = _mapper.Map<List<BeefSperm>>(beefSpermList);
-            _beefSpermServices.AddRangeBeefSperms(spermsList);
+            _beefSpermServices.AddRangeBeefSpermsAsync(spermsList);
         }
 
 

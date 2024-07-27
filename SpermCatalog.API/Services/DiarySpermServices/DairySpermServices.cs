@@ -23,38 +23,33 @@ namespace SpermCatalog.API.Services.DiarySpermServices
             _mapper = mapper;
         }
 
-        public void AddRangeDairySperms(List<DairySperm> spermList)
+        public async Task AddRangeDairySpermsAsync(List<DairySperm> spermList)
         {
             if (spermList == null || spermList.Count <= 0)
             {
                 throw new DairySpermInvalidException();
             }
 
-            _DairyRepo.AddRangeDairySpermsAsync(spermList);
+            await _DairyRepo.AddRangeDairySpermsAsync(spermList);
         }
 
-        public void AddDairySperm(DairySperm dairySperm)
+        public async Task AddDairySpermAsync(DairySperm dairySperm)
         {
             if (dairySperm == null)
             {
                 throw new DairySpermInvalidException();
             }
 
-            _DairyRepo.AddDairySpermAsync(dairySperm);
+            await _DairyRepo.AddDairySpermAsync(dairySperm);
         }
 
-        public List<DairySperm> FilterDairySperms(DairyFilterDTO dairyFilterDTO)
+        public async Task<List<DairySperm>> FilterDairySpermsAsync(DairyFilterDTO dairyFilterDTO)
         {
-            var response = _DairyRepo.GetDairySpermsAsync().Result.OrderBy(x =>x.CustomOrder)
-                .ThenByDescending(x=>x.IsNew)
-                .ThenBy(x=>x.FM)
-                .ThenBy(x=>x.LNM)
-                .ThenBy(x => x.MILK)
-                .ThenBy(x => x.PL)
-                .ThenBy(x => x.TPI)
-                .ToList();
+            var response = await _DairyRepo.GetDairySpermsAsync();
 
-            if (response.Count <= 0|| response is null)
+            response = response.DairyDefaultOrder();
+
+            if (response.Count <= 0 || response is null)
             {
                 //throw new DairySpermNotFoundException();
                 return response;
@@ -65,15 +60,15 @@ namespace SpermCatalog.API.Services.DiarySpermServices
                 return response;
             }
 
-            response = StringsFilter(response,dairyFilterDTO);
+            response = await Task.Run(() => StringsFilter(response, dairyFilterDTO) );
 
             if (!string.IsNullOrEmpty(dairyFilterDTO.Range))
             {
 
-                response = StoreAndFilterByRange(response, dairyFilterDTO.Range);
+                response = await Task.Run(() => StoreAndFilterByRange(response, dairyFilterDTO.Range));
             }
 
-            response = OrderingDairySperms(response, dairyFilterDTO.IsDescending, dairyFilterDTO.OrderBy);
+            response = await Task.Run(() => OrderingDairySperms(response, dairyFilterDTO.IsDescending , dairyFilterDTO.OrderBy));
 
             if (response.Count <= 0)
             {
@@ -82,7 +77,7 @@ namespace SpermCatalog.API.Services.DiarySpermServices
 
             return response;
         }
-
+        
         private List<DairySperm> OrderingDairySperms(List<DairySperm> dairySperms,bool isDescending,string orderBy)
         {
             if (isDescending)
@@ -93,7 +88,7 @@ namespace SpermCatalog.API.Services.DiarySpermServices
                 }
                 else
                 {
-                    dairySperms = dairySperms.OrderByDescending(x => x.CustomOrder).ThenBy(x => x.IsNew).ThenByDescending(x => x.FM).ThenByDescending(x => x.LNM).ThenByDescending(x => x.MILK).ThenByDescending(x => x.PL).ThenByDescending(x => x.TPI).ToList();
+                    dairySperms = dairySperms.DairyDefaultDescendingOrder();
                 }
 
             }
@@ -110,6 +105,7 @@ namespace SpermCatalog.API.Services.DiarySpermServices
 
         private List<DairySperm> StoreAndFilterByRange(List<DairySperm> dairySperms,string range)
         {
+
             var deserializedJson = JsonSerializer.Deserialize<RangeListModel>(range);
 
 
@@ -117,6 +113,7 @@ namespace SpermCatalog.API.Services.DiarySpermServices
             {
                 //save search info
                 var rangeFilter = _mapper.Map<RangeFilter>((index, deserializedJson));
+
                 _DairyRepo.AddRangeFilterAsync(rangeFilter);
 
                 if (index.MinValue != 0 && index.MaxValue != 0)
@@ -176,9 +173,9 @@ namespace SpermCatalog.API.Services.DiarySpermServices
             return dairySperms;
         }
 
-        public DairySperm FindSperm(string id)
+        public async Task<DairySperm> FindSpermAsync(string id)
         {
-            var result = _DairyRepo.FindDairySpermAsync(id).Result;
+            var result = await _DairyRepo.FindDairySpermAsync(id);
 
             //if (result == null)
             //{
@@ -188,38 +185,38 @@ namespace SpermCatalog.API.Services.DiarySpermServices
             return result;
         }
 
-        public void UpdateDairySperm(DairySperm dairySperm)
+        public async Task UpdateDairySpermAsync(DairySperm dairySperm)
         {
-            if (dairySperm == null)
+            if (dairySperm == null || string.IsNullOrEmpty(dairySperm.Id))
             {
                 throw new DairySpermInvalidException();
             }
 
-            _DairyRepo.UpdateDairySpermAsync(dairySperm);
+             await _DairyRepo.UpdateDairySpermAsync(dairySperm);
         }
 
-        public void DeleteSperm(string id)
+        public async Task DeleteSpermAsync(string id)
         {
-            _DairyRepo.DeleteDairySpermAsync(id);
+            await _DairyRepo.DeleteDairySpermAsync(id);
         }
 
-        public void DeleteAllSperms()
+        public async Task DeleteAllSpermsAsync()
         {
-            _DairyRepo.DeleteAllDairySpermsAsync();
+            await _DairyRepo.DeleteAllDairySpermsAsync();
         }
 
-        public List<RangeFilter> GetRangeFilters()
+        public async Task<List<RangeFilter>> GetRangeFiltersAsync()
         {
-            var rangeFilters = _DairyRepo.GetRangeFiltersAsync().Result;
+            var rangeFilters = await _DairyRepo.GetRangeFiltersAsync();
             return rangeFilters;
         }
         
-        public List<RangeFilterCountModel> CalculateRangeFilterSearchCount(TimeSelectionEnum timeSelection)
+        public async Task<List<RangeFilterCountModel>> CalculateRangeFilterSearchCountAsync(TimeSelectionEnum timeSelection)
         {
-            var rangeFilters = GetRangeFilters();
+            var rangeFilters = await GetRangeFiltersAsync();
 
             //filter by date
-            rangeFilters = FilterByDate(timeSelection, rangeFilters);
+            rangeFilters = await Task.Run(() => FilterByDate(timeSelection, rangeFilters));
 
             List<RangeFilterCountModel> rangeFilterCountModelList = new List<RangeFilterCountModel>();
 
@@ -246,13 +243,13 @@ namespace SpermCatalog.API.Services.DiarySpermServices
             return rangeFilterCountModelList;
         }
         
-        public List<AvgRangeFilterModel> CalculateRangeFilterAvg(TimeSelectionEnum timeSelection)
+        public async Task<List<AvgRangeFilterModel>> CalculateRangeFilterAvgAsync(TimeSelectionEnum timeSelection)
         {
             //get range filters
-            var rangeFilters = GetRangeFilters();
+            var rangeFilters = await GetRangeFiltersAsync();
 
             //filter by date
-            rangeFilters = FilterByDate(timeSelection, rangeFilters);
+            rangeFilters = await Task.Run(() => FilterByDate(timeSelection, rangeFilters));
 
             //grouping range filters by index
             var groupedRangeFilters = rangeFilters.GroupBy(x => x.Index).ToList();

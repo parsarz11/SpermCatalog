@@ -28,36 +28,33 @@ namespace SpermCatalog.API.Services.BeefSpermServices
         }
 
 
-        public void AddRangeBeefSperms(List<BeefSperm> spermList)
+        public async Task AddRangeBeefSpermsAsync(List<BeefSperm> spermList)
         {
             if (spermList == null || spermList.Count <= 0)
             {
                 throw new BeefSpermInvalidDataException();
             }
 
-            _beefRepo.AddRangeBeefSpermsAsync(spermList);
+            await _beefRepo.AddRangeBeefSpermsAsync(spermList);
         }
 
-        public void AddBeefSperm(BeefSperm beefSperm)
+        public async Task AddBeefSpermAsync(BeefSperm beefSperm)
         {
             if (beefSperm == null)
             {
                 throw new BeefSpermInvalidDataException();
             }
 
-            _beefRepo.AddBeefSpermAsync(beefSperm);
+            await _beefRepo.AddBeefSpermAsync(beefSperm);
         }
 
 
 
 
-        public List<BeefSperm> FilterBeefSperms(BeefFilterDTO beefFilterDTO)
+        public async Task<List<BeefSperm>> FilterBeefSpermsAsync(BeefFilterDTO beefFilterDTO)
         {
-            var response = _beefRepo.GetBeefSpermsAsync().Result.OrderBy(x => x.CustomOrder)
-                .ThenByDescending(x => x.IsNew)
-                .ThenBy(x => x.SCE)
-                .ToList();
-
+            var response = await _beefRepo.GetBeefSpermsAsync();
+            response = response.BeefDefaultOrder();
 
             if (response.Count <= 0 || response is null)
             {
@@ -70,16 +67,16 @@ namespace SpermCatalog.API.Services.BeefSpermServices
                 return response;
             }
 
-            response = StringsFilter(response, beefFilterDTO);
+            response = await Task.Run(() => StringsFilter(response, beefFilterDTO));
 
 
             if (!string.IsNullOrEmpty(beefFilterDTO.Range))
             {
-                response = StoreAndFilterByRange(response, beefFilterDTO.Range);
+                response = await Task.Run(() => StoreAndFilterByRange(response, beefFilterDTO.Range));
             }
 
 
-            response = OrderingBeefSperms(response, beefFilterDTO.IsDescending, beefFilterDTO.OrderBy);
+            response = await Task.Run(() => OrderingBeefSperms(response, beefFilterDTO.IsDescending, beefFilterDTO.OrderBy));
 
             if (response.Count <= 0)
             {
@@ -165,7 +162,7 @@ namespace SpermCatalog.API.Services.BeefSpermServices
                 }
                 else
                 {
-                    beefSperms = beefSperms.OrderByDescending(x => x.CustomOrder).ThenBy(x => x.IsNew).ThenByDescending(x => x.SCE).ToList();
+                    beefSperms = beefSperms.BeefDefaultOrder();
                 }
 
             }
@@ -181,9 +178,9 @@ namespace SpermCatalog.API.Services.BeefSpermServices
         }
 
 
-        public BeefSperm FindSperm(string id)
+        public async Task<BeefSperm> FindSpermAsync(string id)
         {
-            var result = _beefRepo.FindBeefSpermAsync(id).Result;
+            var result = await _beefRepo.FindBeefSpermAsync(id);
 
             //if (result == null)
             //{
@@ -193,38 +190,38 @@ namespace SpermCatalog.API.Services.BeefSpermServices
             return result;
         }
         
-        public void UpdateBeefSperm(BeefSperm beefSperm)
+        public async Task UpdateBeefSpermAsync(BeefSperm beefSperm)
         {
-            if (beefSperm == null)
+            if (beefSperm == null || string.IsNullOrEmpty(beefSperm.Id))
             {
                 throw new BeefSpermInvalidDataException();
             }
 
-            _beefRepo.UpdateBeefSpermAsync(beefSperm);
+           await _beefRepo.UpdateBeefSpermAsync(beefSperm);
         }
 
-        public void DeleteSperm(string id)
+        public async Task DeleteSpermAsync(string id)
         {
-            _beefRepo.DeleteBeefSpermAsync(id);
+           await _beefRepo.DeleteBeefSpermAsync(id);
         }
 
-        public void DeleteAllSperms()
+        public async Task DeleteAllSpermsAsync()
         {
-            _beefRepo.DeleteAllBeefSpermsAsync();
+           await _beefRepo.DeleteAllBeefSpermsAsync();
         }
 
-        public List<RangeFilter> GetRangeFilters()
+        public async Task<List<RangeFilter>> GetRangeFiltersAsync()
         {
-            var rangeFilters = _beefRepo.GetRangeFiltersAsync().Result;
+            var rangeFilters = await _beefRepo.GetRangeFiltersAsync();
             return rangeFilters;
         }
 
-        public List<RangeFilterCountModel> CalculateRangeFilterSearchCount(TimeSelectionEnum timeSelection)
+        public async Task<List<RangeFilterCountModel>> CalculateRangeFilterSearchCountAsync(TimeSelectionEnum timeSelection)
         {
-            var rangeFilters = GetRangeFilters();
+            var rangeFilters = await GetRangeFiltersAsync();
 
             //filter by date
-            rangeFilters = FilterByDate(timeSelection, rangeFilters);
+            rangeFilters = await Task.Run(() => FilterByDate(timeSelection, rangeFilters));
 
             List<RangeFilterCountModel> rangeFilterCountModelList = new List<RangeFilterCountModel>();
 
@@ -250,13 +247,13 @@ namespace SpermCatalog.API.Services.BeefSpermServices
             return rangeFilterCountModelList;
         }
 
-        public List<AvgRangeFilterModel> CalculateRangeFilterAvg(TimeSelectionEnum timeSelection)
+        public async Task<List<AvgRangeFilterModel>> CalculateRangeFilterAvgAsync(TimeSelectionEnum timeSelection)
         {
             //get range filters
-            var rangeFilters = GetRangeFilters();
+            var rangeFilters = await GetRangeFiltersAsync();
 
             //filter by date
-            rangeFilters = FilterByDate(timeSelection, rangeFilters);
+            rangeFilters = await Task.Run(() => FilterByDate(timeSelection, rangeFilters));
 
             //grouping range filters by index
             var groupedRangeFilters = rangeFilters.GroupBy(x => x.Index).ToList();

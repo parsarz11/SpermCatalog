@@ -9,16 +9,16 @@ namespace SpermCatalog.API.Contracts
 {
     public interface IBeefSpermServices
     {
-        void AddRangeBeefSperms(List<BeefSperm> spermList);
-        void AddBeefSperm(BeefSperm beefSperm);
-        List<BeefSperm> FilterBeefSperms(BeefFilterDTO beefFilterDTO);
-        BeefSperm FindSperm(string id);
-        void UpdateBeefSperm(BeefSperm beefSperm);
-        void DeleteSperm(string id);
-        void DeleteAllSperms();
-        List<RangeFilter> GetRangeFilters();
-        List<RangeFilterCountModel> CalculateRangeFilterSearchCount(TimeSelectionEnum timeSelection);
-        List<AvgRangeFilterModel> CalculateRangeFilterAvg(TimeSelectionEnum timeSelection);
+        Task AddRangeBeefSpermsAsync(List<BeefSperm> spermList);
+        Task AddBeefSpermAsync(BeefSperm beefSperm);
+        Task<List<BeefSperm>> FilterBeefSpermsAsync(BeefFilterDTO beefFilterDTO);
+        Task<BeefSperm> FindSpermAsync(string id);
+        Task UpdateBeefSpermAsync(BeefSperm beefSperm);
+        Task DeleteSpermAsync(string id);
+        Task DeleteAllSpermsAsync();
+        Task<List<RangeFilter>> GetRangeFiltersAsync();
+        Task<List<RangeFilterCountModel>> CalculateRangeFilterSearchCountAsync(TimeSelectionEnum timeSelection);
+        Task<List<AvgRangeFilterModel>> CalculateRangeFilterAvgAsync(TimeSelectionEnum timeSelection);
         
     }
 }
