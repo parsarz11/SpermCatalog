@@ -77,23 +77,23 @@ namespace SpermCatalog.API.Controllers
         }
 
         [HttpGet("GetRangeFilters")]
-        public async Task<IActionResult> GetRangeFilters()
+        public async Task<IActionResult> GetRangeFilters(string? category)
         {
-            var rangeFilters = await _SpermServices.GetRangeFiltersAsync();
+            var rangeFilters = await _SpermServices.GetRangeFiltersAsync(category);
             return Ok(rangeFilters);
         }
 
         [HttpGet("RangeFilterAvg")]
-        public async Task<IActionResult> GetRangeFilterAvg(TimeSelectionEnum timeSelection)
+        public async Task<IActionResult> GetRangeFilterAvg(TimeSelectionEnum timeSelection,string category)
         {
-            var rangeFilterAverage = await _SpermServices.CalculateRangeFilterAvgAsync(timeSelection);
+            var rangeFilterAverage = await _SpermServices.CalculateRangeFilterAvgAsync(timeSelection, category);
             return Ok(rangeFilterAverage);
         }
 
         [HttpGet("RangeFilterSearchCount")]
-        public async Task<IActionResult> GetRangeFilterSearchCount(TimeSelectionEnum timeSelection)
+        public async Task<IActionResult> GetRangeFilterSearchCount(TimeSelectionEnum timeSelection,string category)
         {
-            var searchCount = await _SpermServices.CalculateRangeFilterSearchCountAsync(timeSelection);
+            var searchCount = await _SpermServices.CalculateRangeFilterSearchCountAsync(timeSelection, category);
             return Ok(searchCount);
         }
     }

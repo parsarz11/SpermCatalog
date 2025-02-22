@@ -16,8 +16,9 @@ namespace SpermCatalog.API.Contracts
         Task UpdateDairySpermAsync(DairySperm dairySperm);
         Task DeleteSpermAsync(string id);
         Task DeleteAllSpermsAsync();
-        Task<List<RangeFilter>> GetRangeFiltersAsync();
+        Task<List<RangeFilter>> GetRangeFiltersAsync(string? category);
         Task<List<RangeFilterCountModel>> CalculateRangeFilterSearchCountAsync(TimeSelectionEnum timeSelection);
-        Task<List<AvgRangeFilterModel>> CalculateRangeFilterAvgAsync(TimeSelectionEnum timeSelection);
+        Task<List<RangeFilterCountModel>> CalculateRangeFilterSearchCountAsync(TimeSelectionEnum timeSelection, string category);
+        Task<List<AvgRangeFilterModel>> CalculateRangeFilterAvgAsync(TimeSelectionEnum timeSelection, string category);
     }
 }

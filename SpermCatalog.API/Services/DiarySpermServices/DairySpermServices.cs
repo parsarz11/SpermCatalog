@@ -7,6 +7,7 @@ using SpermCatalog.API.models.DTOs.Filters;
 using SpermCatalog.DataAccess.Contracts;
 using SpermCatalog.DataAccess.Entities;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 using static SpermCatalog.API.models.TimeSelectionModel;
 
@@ -205,15 +206,21 @@ namespace SpermCatalog.API.Services.DiarySpermServices
             await _DairyRepo.DeleteAllDairySpermsAsync();
         }
 
-        public async Task<List<RangeFilter>> GetRangeFiltersAsync()
+        public async Task<List<RangeFilter>> GetRangeFiltersAsync(string? category = default)
         {
             var rangeFilters = await _DairyRepo.GetRangeFiltersAsync();
+
+            if (category != null)
+            {
+                rangeFilters = rangeFilters.Where(x => x.Category == category).ToList();    
+            }
+
             return rangeFilters;
         }
         
-        public async Task<List<RangeFilterCountModel>> CalculateRangeFilterSearchCountAsync(TimeSelectionEnum timeSelection)
+        public async Task<List<RangeFilterCountModel>> CalculateRangeFilterSearchCountAsync(TimeSelectionEnum timeSelection,string category)
         {
-            var rangeFilters = await GetRangeFiltersAsync();
+            var rangeFilters = await GetRangeFiltersAsync(category);
 
             //filter by date
             rangeFilters = await Task.Run(() => FilterByDate(timeSelection, rangeFilters));
@@ -243,10 +250,10 @@ namespace SpermCatalog.API.Services.DiarySpermServices
             return rangeFilterCountModelList;
         }
         
-        public async Task<List<AvgRangeFilterModel>> CalculateRangeFilterAvgAsync(TimeSelectionEnum timeSelection)
+        public async Task<List<AvgRangeFilterModel>> CalculateRangeFilterAvgAsync(TimeSelectionEnum timeSelection,string category)
         {
             //get range filters
-            var rangeFilters = await GetRangeFiltersAsync();
+            var rangeFilters = await GetRangeFiltersAsync(category);
 
             //filter by date
             rangeFilters = await Task.Run(() => FilterByDate(timeSelection, rangeFilters));

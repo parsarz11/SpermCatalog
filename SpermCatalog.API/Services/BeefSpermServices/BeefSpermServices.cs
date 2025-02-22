@@ -210,15 +210,21 @@ namespace SpermCatalog.API.Services.BeefSpermServices
            await _beefRepo.DeleteAllBeefSpermsAsync();
         }
 
-        public async Task<List<RangeFilter>> GetRangeFiltersAsync()
+        public async Task<List<RangeFilter>> GetRangeFiltersAsync(string? category = default)
         {
             var rangeFilters = await _beefRepo.GetRangeFiltersAsync();
+
+            if (category != null)
+            {
+                rangeFilters = rangeFilters.Where(x => x.Category == category).ToList();
+            }
+
             return rangeFilters;
         }
 
-        public async Task<List<RangeFilterCountModel>> CalculateRangeFilterSearchCountAsync(TimeSelectionEnum timeSelection)
+        public async Task<List<RangeFilterCountModel>> CalculateRangeFilterSearchCountAsync(TimeSelectionEnum timeSelection,string category)
         {
-            var rangeFilters = await GetRangeFiltersAsync();
+            var rangeFilters = await GetRangeFiltersAsync(category);
 
             //filter by date
             rangeFilters = await Task.Run(() => FilterByDate(timeSelection, rangeFilters));
@@ -247,10 +253,10 @@ namespace SpermCatalog.API.Services.BeefSpermServices
             return rangeFilterCountModelList;
         }
 
-        public async Task<List<AvgRangeFilterModel>> CalculateRangeFilterAvgAsync(TimeSelectionEnum timeSelection)
+        public async Task<List<AvgRangeFilterModel>> CalculateRangeFilterAvgAsync(TimeSelectionEnum timeSelection,string category)
         {
             //get range filters
-            var rangeFilters = await GetRangeFiltersAsync();
+            var rangeFilters = await GetRangeFiltersAsync(category);
 
             //filter by date
             rangeFilters = await Task.Run(() => FilterByDate(timeSelection, rangeFilters));

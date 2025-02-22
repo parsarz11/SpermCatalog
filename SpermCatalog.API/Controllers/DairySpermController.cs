@@ -8,6 +8,7 @@ using SpermCatalog.API.models.DTOs.Filters;
 using SpermCatalog.API.models.DTOs.ResponseDTOs;
 using SpermCatalog.DataAccess.Contracts;
 using SpermCatalog.DataAccess.Entities;
+using System;
 using static SpermCatalog.API.models.TimeSelectionModel;
 
 namespace SpermCatalog.API.Controllers
@@ -79,23 +80,23 @@ namespace SpermCatalog.API.Controllers
         }
 
         [HttpGet("GetRangeFilters")]
-        public async Task<IActionResult> GetRangeFilters()
+        public async Task<IActionResult> GetRangeFilters(string? category)
         {
-            var rangeFilters = await _DairyServices.GetRangeFiltersAsync();
+            var rangeFilters = await _DairyServices.GetRangeFiltersAsync(category);
             return Ok(rangeFilters);
         }
 
         [HttpGet("RangeFilterAvg")]
-        public async Task<IActionResult> GetRangeFilterAvg(TimeSelectionEnum timeSelection)
+        public async Task<IActionResult> GetRangeFilterAvg(TimeSelectionEnum timeSelection, string category)
         {
-            var rangeFilterAverage = await _DairyServices.CalculateRangeFilterAvgAsync(timeSelection);
+            var rangeFilterAverage = await _DairyServices.CalculateRangeFilterAvgAsync(timeSelection, category);
             return Ok(rangeFilterAverage);
         }
 
         [HttpGet("RangeFilterSearchCount")]
-        public async Task<IActionResult> GetRangeFilterSearchCount(TimeSelectionEnum timeSelection)
+        public async Task<IActionResult> GetRangeFilterSearchCount(TimeSelectionEnum timeSelection, string category)
         {
-            var searchCount = await _DairyServices.CalculateRangeFilterSearchCountAsync(timeSelection);
+            var searchCount = await _DairyServices.CalculateRangeFilterSearchCountAsync(timeSelection,category);
             return Ok(searchCount);
         }
     }
